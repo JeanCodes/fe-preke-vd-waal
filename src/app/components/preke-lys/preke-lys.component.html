@@ -56,35 +56,31 @@
         />
       </div>
 
-      <label for="tema" *ngIf="currentLanguage === 'Afrikaans'"
-        >Soekwoord in digitale preke</label
-      >
-      <label for="tema" *ngIf="currentLanguage === 'Nederlands'"
-        >Zoekwoord in digitale preke</label
-      >
-      <input
-        type="text"
-        id="tema"
-        name="tema"
-        required
-        [(ngModel)]="filters.tema"
-        class="form-control"
-      />
+<div class="container">
+    <div class="form-group">
+      <label for="tema1" *ngIf="currentLanguage === 'Afrikaans'">Soekwoord in digitale preke</label>
+      <input type="text" id="tema1" class="form-control" *ngIf="currentLanguage === 'Afrikaans'" [(ngModel)]="filters.tema">
+    </div>
 
-      <label for="tema" *ngIf="currentLanguage === 'Afrikaans'"
-        >Soekwoord in tema</label
-      >
-      <label for="tema" *ngIf="currentLanguage === 'Nederlands'"
-        >Zoekwoord in thema</label
-      >
-      <input
-        type="text"
-        id="tema"
-        name="tema"
-        required
-        [(ngModel)]="filters.tema"
-        class="form-control"
-      />
+    <div class="form-group">
+      <label for="tema2" *ngIf="currentLanguage === 'Nederlands'">Zoekwoord in digitale preke</label>
+      <input type="text" id="tema2" class="form-control" *ngIf="currentLanguage === 'Nederlands'" [(ngModel)]="filters.tema">
+    </div>
+
+    <!-- Assuming you're toggling these based on language, similar structure for other fields -->
+    <div class="form-group">
+      <label for="tema3" *ngIf="currentLanguage === 'Afrikaans'">Soekwoord in tema</label>
+      <input type="text" id="tema3" class="form-control" *ngIf="currentLanguage === 'Afrikaans'" [(ngModel)]="filters.tema">
+    </div>
+
+    <div class="form-group">
+      <label for="tema4" *ngIf="currentLanguage === 'Nederlands'">Zoekwoord in thema</label>
+      <input type="text" id="tema4" class="form-control" *ngIf="currentLanguage === 'Nederlands'" [(ngModel)]="filters.tema">
+    </div>
+</div>
+
+<!-- Repeat for other label-input pairs as needed -->
+
       <br />
 
       <div class="form-group">
@@ -270,6 +266,7 @@
       </div>
       <br />
 
+	<div class="buttons-container">
       <button
         [class.plus]="!isOldTestamentVisible"
         class="min-btn"
@@ -414,20 +411,19 @@
           {{ boek.Boek }}
         </label>
       </div>
-
-      <div class="checkboxes-container">
-        <div class="label-button-container">
-          <a
-            href="https://prekevdwaal.s3.eu-west-1.amazonaws.com/preke/romantiek.pdf"
-            target="_blank"
-            download="romantiek.pdf"
-            class="download-button"
-          >
-            Kies Romantiek
-          </a>
-        </div>
-      </div>
-
+	  <div class="checkboxes-container">
+		<div class="label-button-container">
+			<a
+				href="https://prekevdwaal.s3.eu-west-1.amazonaws.com/preke/romantiek.pdf"
+				target="_blank"
+				download="romantiek.pdf"
+				class="download-button"
+			>
+			Kies Romantiek
+			</a>
+		</div>
+	</div>
+	</div>
       <hr />
       <p *ngIf="currentLanguage === 'Afrikaans'">
         Kliek op soek na keuses gemaak is
