@@ -1,208 +1,151 @@
-/* General Reset for Spacing and Box Sizing */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: Arial, sans-serif; /* Preferred font for readability */
-}
-
-.filter-div {
-  padding: 20px;
-  border-radius: 8px; /* Soften edges for a modern look */
-  margin: 20px auto; /* Centering the div */
-  max-width: 80%; /* Optimal reading width */
-}
-
-.submit-form > div {
-  margin-bottom: 20px; /* Space between sections */
-}
-
-.year-container, .form-group {
-  margin-bottom: 15px;
-}
-
-h3 {
-  margin-bottom: 15px; /* Space after headings for separation */
-  color: #333; /* Dark color for contrast */
-}
-
-input[type="text"], .form-control {
-  width: 100%; /* Full width to align with container */
-  padding: 8px;
-  margin-top: 8px; /* Space above inputs */
-  margin-bottom: 16px; /* Space below inputs for separation */
-  border: 1px solid #ccc; /* Subtle border */
-  border-radius: 4px; /* Matching rounded corners */
-}
-
-/* Radio buttons container for cleaner alignment */
-.radio-options {
-  margin-top: 8px;
+.year-container,
+.container,
+.radio-options,
+.buttons-container {
   display: flex;
-  flex-direction: column; /* Stack radio buttons vertically */
+  align-items: center; /* Align items vertically in the center */
+  flex-wrap: wrap; /* Allows items to wrap to the next line if not enough space */
 }
 
-.radio-options label {
-  margin-bottom: 5px; /* Space between radio buttons */
+/* Additional styles for alignment and spacing */
+.form-group,
+.radio-options,
+.buttons-container {
+  justify-content: flex-start; /* Aligns items to the start of the container */
+  gap: 10px; /* Spacing between each item */
 }
 
-.min-btn, .button {
-  background-color: #4CAF50; /* Consistent theme color */
+/* Style for input fields to ensure uniformity */
+input[type="text"],
+input[type="radio"],
+.form-control {
+  margin-right: 10px; /* Adds a margin to the right of inputs for spacing */
+}
+
+/* Style for labels to improve readability */
+label {
+  margin-right: 5px; /* Small margin to the right of labels */
+}
+
+/* Adjustments for buttons to make them more visually appealing */
+.button,
+.min-btn,
+.btn-success {
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  margin: 5px; /* Adds margin around buttons for spacing */
+  background-color: #d7a975;
   color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-block; /* Align buttons side by side */
-  margin-right: 10px; /* Space between buttons */
+  padding: 5px 10px; /* Padding inside buttons for a better appearance */
+  border: none; /* Removes border */
 }
-
-.min-btn:hover, .button:hover {
-  background-color: #45a049; /* Darken on hover */
-}
-
-/* Specific style for the download button to stand out */
+/* Enhances the visibility of the download button */
 .download-button {
-  background-color: #008cba; /* Contrast color */
+  background-color: #d7a975;
   color: white;
-  text-decoration: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  display: inline-block; /* Allows for margin */
-  margin-bottom: 10px; /* Space below the button */
+  padding: 5px 10px;
+  text-decoration: none; /* Removes underline from link */
 }
 
-.download-button:hover {
-  background-color: #007ba7; /* Slightly darker on hover */
+/* Styles for the pagination controls */
+.pagination-controls {
+  display: flex;
+  justify-content: center; /* Centers pagination controls */
+  padding: 10px 0; /* Adds padding above and below for spacing */
 }
 
+/* General Table Styling */
 #prekeLys {
   width: 100%;
-  border-collapse: collapse; /* Clean table styling */
-  margin-top: 20px; /* Space before table */
+  border-collapse: collapse; /* Collapses borders between table cells for a cleaner look */
+  border-spacing: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow around the table for depth */
+  margin-top: 20px; /* Adds space above the table */
+  margin-bottom: 20px; /* Adds space below the table */
+  font-size: 16px; /* Adjusts the font size for readability */
 }
 
-#prekeLys th, #prekeLys td {
+#prekeLys th,
+#prekeLys td {
   text-align: left;
-  padding: 8px;
-  border: 1px solid #ddd; /* Light border for readability */
+  padding: 12px 15px; /* Increases padding for more space inside cells */
+  border-bottom: 1px solid #ddd; /* Adds a border below each row for separation */
 }
 
+/* Table Header Styling */
 #prekeLys th {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #892b21; /* Changes header background to a green shade for visual distinction */
+  color: white; /* White text for contrast against the header background */
+  font-weight: bold; /* Makes header text bold */
 }
 
+/* Table Row Styling & Hover Effect */
 #prekeLys tr:nth-child(even) {
-  background-color: #f2f2f2; /* Zebra striping for readability */
+  background-color: #f9f9f9; /* Zebra striping for rows */
 }
 
-.pagination {
-  display: flex;
-  justify-content: center; /* Center pagination controls */
-  padding: 20px 0; /* Space around pagination */
+#prekeLys tr:hover {
+  background-color: #f2f2f2; /* Hover effect for rows */
+  cursor: pointer; /* Changes the cursor to indicate rows are interactive */
 }
 
-/* Floating labels for additional information */
-.float-left, .float-right {
-  float: none; /* Avoid floating for a cleaner responsive layout */
-  display: block;
-  text-align: center;
-  margin-top: 20px;
-}
-
-.clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.year-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px; /* Reduced gap for closeness */
-  margin-bottom: 20px;
-}
-
-.year-container label {
-  margin-bottom: 0; /* Remove bottom margin from labels for closer alignment */
-  white-space: nowrap; /* Prevent labels from wrapping */
-}
-
-.year-container input {
-  flex: 0 0 160px; /* Set a fixed width for all input fields */
-  height: 40px; /* Optional: Define a specific height for input fields */
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.form-control {
-  width: 100%; /* Ensures form-control takes the full width of its flex basis */
-}
-
-/* Responsive adjustment */
-@media (max-width: 768px) {
-  .year-container {
-    flex-direction: column;
+/* Enhances the look of the table on smaller screens */
+@media screen and (max-width: 600px) {
+  #prekeLys th,
+  #prekeLys td {
+    display: block;
+    text-align: right;
   }
 
-  .year-container label, .year-container input {
-    width: auto; /* Allow elements to expand naturally */
-    margin: 5px 0; /* Adjust margins for vertical layout */
+  #prekeLys th::before {
+    float: left;
+    content: attr(data-th) " : ";
+  }
+
+  #prekeLys th,
+  #prekeLys td {
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  #prekeLys tr {
+    margin-bottom: 15px;
+    display: block;
+    background-color: #fff;
+  }
+
+  #prekeLys th:last-child,
+  #prekeLys td:last-child {
+    border-bottom: none;
   }
 }
 
-.labels-container {
+/* Styles for the checkboxes container */
+.checkboxes-container {
+  display: flex; /* Use Flexbox for layout */
+  flex-wrap: wrap; /* Allows items to wrap onto new lines as needed */
+  gap: 10px; /* Adds some space between checkbox items */
+  margin-top: 20px; /* Adds some space above the container */
+  width: 100%; /* Ensures the container takes up the full width */
+}
+
+/* Styles for individual book containers */
+.book-container {
+  flex-basis: calc(
+    33.333% - 10px
+  ); /* Example for three items per row, adjust as necessary */
   display: flex;
-  align-items: center; /* Vertically center the items in the container */
-  gap: 10px; /* Space between items, if you have more than one visible at a time */
+  align-items: center; /* Aligns items vertically */
 }
 
-.input-group {
+/* Styles for labels within book containers for better alignment and appearance */
+.book-checks {
   display: flex;
-  align-items: center;
-  gap: 10px; /* Adjust gap between label and input */
-  flex-wrap: wrap; /* Allow wrapping for responsiveness */
+  align-items: center; /* Ensures label and checkbox are aligned */
+  width: 100%; /* Ensures labels take the full width of their container */
 }
 
-.input-group label {
-  white-space: nowrap; /* Keep labels on a single line */
-  margin-right: 5px; /* Optional: add some space between label and input */
+/* Optional: Style adjustments for checkboxes for consistency */
+.book-container input[type="checkbox"] {
+  margin-right: 5px; /* Adds a small space between the checkbox and the label text */
 }
-
-.form-control {
-  flex: 1; /* Allow inputs to grow but with a limit */
-  max-width: 300px; /* Maximum width of input fields */
-}
-
-.container {
-  max-width: 800px; /* Or any maximum width */
-  margin: auto; /* Center container */
-  padding: 20px; /* Add some padding inside the container */
-}
-
-.form-group {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Adjust space between label and input */
-  margin-bottom: 15px; /* Space between each form group */
-}
-
-.form-group label {
-  min-width: 150px; /* Adjust based on your longest label */
-  margin-right: 10px; /* Ensures a gap between label and input if flex-gap isn't supported */
-}
-
-.form-control {
-  flex-grow: 1;
-  max-width: 250px; /* Prevents input from taking up too much space */
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
