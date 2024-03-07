@@ -1,0 +1,33 @@
+ul,
+ol[type="1"] {
+  margin: auto;
+  width: 90%;
+  padding-left: 50px;
+}
+
+.center {
+  margin: auto;
+  width: 90%;
+}
+
+h1,
+h2 {
+  margin-bottom: 0px;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  line-height: 1.7;
+}
+
+p {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  line-height: 1.7;
+}
+
+h1 {
+  text-align: center;
+}

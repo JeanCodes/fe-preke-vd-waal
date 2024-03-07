@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { 
+  margin: 0; 
+  font-family: Lato, sans-serif, Roboto, "Helvetica Neue", sans-serif; 
+  background-image: url(https://prekevdwaal.s3.eu-west-1.amazonaws.com/Background.jpg);  
+}
+
+footer {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 18px 20px;
+  text-decoration: none;
+  background-color: #892B21;
+}

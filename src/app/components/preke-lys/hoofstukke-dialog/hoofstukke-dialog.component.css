@@ -1,0 +1,67 @@
+/* Background Styles */
+.h_stuk, mat-dialog-container {
+  background-image: url("https://prekevdwaal.s3.eu-west-1.amazonaws.com/Background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  padding: 5px;
+  width: 500px;
+}
+
+/* Text Colors */
+h2, p, label {
+  color: black;
+}
+
+/* Button Styles */
+.bk-btn, .bk-btn2 {
+  background-color: #892b21;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.bk-btn {
+  width: 38%;
+  line-height: 1.5;
+}
+
+.bk-btn2 {
+  width: 60%;
+}
+
+.bk-btn:hover, .bk-btn2:hover {
+  background-color: #c21e0f;
+}
+
+/* Checkbox Container */
+.checkboxes-container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px 5px;
+  max-width: 100%;
+  margin: 2px;
+}
+
+/* Checkbox Styles */
+.book-checks {
+  display: flex;
+  align-items: center;
+  padding: 1px 2px;
+  border-radius: 1px;
+  transition: background-color 0.2s;
+}
+
+.book-checks:hover {
+  background-color: #f5f5f5;
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+  transform: scale(1.5);
+}
+

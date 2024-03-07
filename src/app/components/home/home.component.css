@@ -1,0 +1,70 @@
+/* Style for the container */
+.banner-container {
+  width: 100%; /* This ensures the container takes the full width of its parent. Adjust if needed. */
+  overflow: hidden; /* This will hide any part of the image that overflows the container. */
+  padding-top: 25px;
+  place-items: center; /* Centers the image both horizontally and vertically */
+  justify-content: center; /* Horizontally centers the image */
+  align-items: center; /* Vertically centers the image */
+  float: center;
+}
+
+/* Style for the banner image */
+.banner-image {
+  display: block; /* Removes any default spacing below the image */
+  width: 95%; /* Makes the image stretch across the full width of its container */
+  place-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  justify-content: center; /* Horizontally centers the image */
+  align-items: center; /* Vertically centers the image */
+}
+
+.right {
+  position: relative;
+  float: right;
+}
+
+.open {
+  width: 20%;
+  float: right;
+  margin: 20px;
+}
+
+.left {
+  float: left;
+  width: 65%;
+  position: relative;
+}
+
+ul,
+ol[type="1"] {
+  margin: auto;
+  width: 90%;
+  padding-left: 50px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+h1 {
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+p {
+  padding-top: 10px;
+  padding-bottom: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  line-height: 1.7;
+}
+
+/* Style the h1 header */
+h1 {
+  padding-bottom: 0px;
+  text-align: center;
+}

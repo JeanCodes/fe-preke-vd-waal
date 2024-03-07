@@ -1,0 +1,51 @@
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+
+@Component({
+  selector: 'app-hoofstukke-dialog',
+  templateUrl: './hoofstukke-dialog.component.html',
+  styleUrls: ['./hoofstukke-dialog.component.css'],
+})
+export class HoofstukkeDialogComponent implements OnInit {
+  public data: any;
+  public checkedStates: { chapter: number; checked: boolean }[] = [];
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<HoofstukkeDialogComponent>
+  ) {
+    this.data = data; // assuming the array is under the "relevantChapters" key
+    console.log('this.data: ',this.data);
+    this.checkedStates = this.data.relevantChapters.map((chapter: any) => ({
+      chapter,
+      checked: false,
+    }));
+  }
+
+  ngOnInit(): void {
+    console.log(this.checkedStates);
+  }
+
+  checkAllHoofstukke(): void {
+    for (let state of this.checkedStates) {
+      state.checked = true;
+    }
+  }
+
+  uncheckAllHoofstukke(): void {
+    for (let state of this.checkedStates) {
+      state.checked = false;
+    }
+  }
+
+  logSelectedItems() {
+    const selectedItems = this.checkedStates.filter(item => item.checked).map(item => item.chapter);
+    const logObject = {
+        book: this.data.boekno,
+        selectedChapters: selectedItems
+    };
+    console.log(logObject);
+  }
+
+}

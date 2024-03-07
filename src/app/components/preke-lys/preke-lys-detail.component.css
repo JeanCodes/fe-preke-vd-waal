@@ -1,0 +1,45 @@
+.preek-deets, mat-dialog-container {
+  background-image: url("https://prekevdwaal.s3.eu-west-1.amazonaws.com/Background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  padding: 5px;
+}
+
+body {
+  background-image: url(https://prekevdwaal.s3.eu-west-1.amazonaws.com/Background.jpg);
+}
+
+#prekeDetail {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+mat-dialog-container {
+  background-image: url("https://prekevdwaal.s3.eu-west-1.amazonaws.com/Background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+#prekeDetail td,
+#prekeDetail th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#prekeDetail tr:nth-child(even) {
+  background-color: #d7a975;
+}
+
+#prekeDetail tr:hover {
+  background-color: #ddd;
+}
+
+#prekeDetail th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #892b21;
+  color: white;
+}

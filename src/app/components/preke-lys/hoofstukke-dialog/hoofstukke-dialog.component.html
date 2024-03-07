@@ -1,0 +1,23 @@
+<div class="h_stuk">
+  <h2 mat-dialog-title>Beskikbaar Hoofstukke vir {{ data.boek }}</h2>
+  <mat-dialog-content>
+    <!-- Checkboxes Section -->
+    <div class="label-button-container">
+      <label for="ot">Kies een of meer hoofstukke</label>
+    </div>
+    <br />
+    <div class="checkboxes-container">
+      <div *ngFor="let state of checkedStates">
+        <input
+          type="checkbox"
+          [(ngModel)]="state.checked"
+          [id]="'chapter-' + state.chapter"
+        />
+        <label [for]="'chapter-' + state.chapter">{{ state.chapter }}</label>
+      </div>
+    </div>
+    <br />
+    <!-- Checkboxes -->
+  <button class="bk-btn" on-click="logSelectedItems()">Laai</button>
+  </mat-dialog-content>
+</div>

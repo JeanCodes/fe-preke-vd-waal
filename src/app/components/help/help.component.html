@@ -1,0 +1,86 @@
+<div>
+  <h1>{{ currentLanguage === 'Afrikaans' ? 'HOE OM ‘N BEPAALDE PREEK TE VIND' : (currentLanguage === 'Nederlands' ? 'HOE EEN BEPAALDE PREEK TE VINDEN' : '') }}</h1>
+</div>
+
+<p class="center">
+  {{ currentLanguage === 'Afrikaans' ? 
+  'Die preke op die webwerf kan gelees, afgelaai en gedruk word. Die blokkie met “Aantal preke gekies” begin met die aantal preke wat beskikbaar is op die webwerf. Na elkeen van die volgende keuses toon dieselfde blokkie aan hoeveel preke gekies is.' : 
+  'De preken op de website kunnen worden gelezen, gedownload en afgedrukt. Het vakje met "Aantal gekozen preken" begint met het aantal preken dat beschikbaar is op de website. Na elke volgende keuze geeft hetzelfde vakje aan hoeveel preken zijn gekozen.' }}
+</p>
+
+<div>
+  <h2>{{ currentLanguage === 'Afrikaans' ? 'Oorhoofse keuses' : 'Hoofdkeuzes' }}</h2>
+</div>
+
+<ul>
+  <li>
+    {{ currentLanguage === 'Afrikaans' ? 'Klik op een van die drie taal-opsies (Afrikaans, Nederlands, almal) en/of' : 'Klik op een van de drie taalopties (Afrikaans, Nederlands, allemaal) en/of' }}
+  </li>
+  <li>
+    {{ currentLanguage === 'Afrikaans' ? 'Klik op een van die drie teks-opsies (Preektekste, Leestekste, almal) en/of' : 'Klik op een van de drie tekstopties (Preekteksten, Leesteksten, allemaal) en/of' }}
+  </li>
+  <li>
+    {{ currentLanguage === 'Afrikaans' ? 'Vul die beginjaar en eindjaar in (bv. 1942 tot 1945) en druk die invoersleutel (“enter”) en/of' : 'Vul het startjaar en eindjaar in (bijv. 1942 tot 1945) en druk op de invoertoets ("enter") en/of' }}
+  </li>
+  <li>
+    {{ currentLanguage === 'Afrikaans' ? 'Klik op een van die drie vorm-opsies (geskandeer, soekbaar, almal) en/of' : 'Klik op een van de drie vormopties (gescand, doorzoekbaar, allemaal) en/of' }}
+  </li>
+  <li>
+    {{ currentLanguage === 'Afrikaans' ? 'Klik op een van die vyf bron-opsies (a tot e) en/of' : 'Klik op een van de vijf bronopties (a tot e) en/of' }}
+  </li>
+  <li>
+    {{ currentLanguage === 'Afrikaans' ? 'Klik op een van die drie teks-opsies (Preektekste, Leestekste, almal) en/of' : 'Klik op een van de drie tekstopties (Preekteksten, Leesteksten, allemaal) en/of' }}
+  </li>
+  <li>
+    {{ currentLanguage === 'Afrikaans' ? 'Gaan na net een van die volgende vier soek-moontlikhede' : 'Ga naar slechts een van de volgende vier zoekmogelijkheden' }}
+  </li>
+</ul>
+
+<div>
+  <h2>{{ currentLanguage === 'Afrikaans' ? '1. Kies per teks' : '1. Kies per tekst' }}</h2>
+</div>
+
+<p class="center">
+  {{ currentLanguage === 'Afrikaans' ? 
+  'Kies geskrif: Ou Testament, Nuwe Testament of Belydenisse.' : 
+  'Kies geschrift: Oude Testament, Nieuwe Testament of Belijdenissen.' }}
+  <br />
+  {{ currentLanguage === 'Afrikaans' ? 
+  'Kies boek en kies dan hoofstuknommer.' : 
+  'Kies boek en selecteer vervolgens hoofdstuknummer.' }}
+  <br />
+  {{ currentLanguage === 'Afrikaans' ? 
+  'Die deel van die indeks wat gekies is verskyn op ‘n afrol-skerm. Aan die hand van die inligting in die skerm, kies een van die preke en klik op die preeknommer om die preek op te roep. Indien meer as een preek gekies word, is dit die maklikste om die preke se nommers af te skryf en soek-moontlikheid 2 te gebruik.' : 
+  'Het deel van de index dat is geselecteerd verschijnt op een dropdown-scherm. Op basis van de informatie op het scherm, selecteer een van de preken en klik op het preeknummer om de preek op te roepen. Als er meer dan één preek wordt geselecteerd, is het het gemakkelijkst om de preeknummers op te schrijven en zoekoptie 2 te gebruiken.' }}
+</p>
+
+<div>
+  <h2>{{ currentLanguage === 'Afrikaans' ? '2. Kies per preeknommer.' : '2. Kies per preeknummer.' }}</h2>
+</div>
+
+<p class="center">
+  {{ currentLanguage === 'Afrikaans' ? 
+  'Tik die nommer van die preek in die blokkie en druk die invoersleutel (“enter”).' : 
+  'Voer het nummer van de preek in het vakje in en druk op de invoertoets ("enter").' }}
+</p>
+
+<div>
+  <h2>{{ currentLanguage === 'Afrikaans' ? '3. Kies per tema-soekwoord (alle preke)' : '3. Kies per thema-zoekwoord (alle preken)' }}</h2>
+</div>
+
+<p class="center">
+  {{ currentLanguage === 'Afrikaans' ? 
+  'Gebruik een of meer soekwoorde in die TEMA-soek-blokkie en druk die invoersleutel. Die indeks met die soekwoord/e in die tema verskyn in die afrolskerm waaruit een preek gekies kan word.' : 
+  'Gebruik een of meer zoekwoorden in het THEMA-zoek-vakje en druk op de invoertoets. De index met het/de zoekwoord(en) in het thema verschijnt in het dropdown-menu waaruit een preek kan worden geselecteerd.' }}
+</p>
+
+<div>
+  <h2>{{ currentLanguage === 'Afrikaans' ? '4. Kies per preek-soekwoord (net vir die soekbare preke)' : '4. Kies per preek-zoekwoord (alleen voor de doorzoekbare preken)' }}</h2>
+</div>
+
+<p class="center">
+  {{ currentLanguage === 'Afrikaans' ? 
+  'Gebruik een of meer soekwoorde in die PREEK-soek-blokkie en druk die invoersleutel. Die indeks met die soekwoord/e in die preek verskyn in die afrolskerm waaruit een preek gekies kan word.' : 
+  'Gebruik een of meer zoekwoorden in het PREEK-zoek-vakje en druk op de invoertoets. De index met het/de zoekwoord(en) in de preek verschijnt in het dropdown-menu waaruit een preek kan worden geselecteerd.' }}
+</p>
+

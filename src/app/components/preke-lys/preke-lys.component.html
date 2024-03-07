@@ -1,0 +1,539 @@
+<div class="filter-div">
+  <div class="submit-form">
+    <div>
+      <h3 *ngIf="currentLanguage === 'Afrikaans'">
+        Kies een of meer preke uit 638 en kliek dan op Soek aan die einde.
+      </h3>
+      <h3 *ngIf="currentLanguage === 'Nederlands'">
+        Kies een of meer preke uit 638 en klik dan op Zoek aan het einde.
+      </h3>
+
+      <div class="year-container">
+        <label for="id" *ngIf="currentLanguage === 'Afrikaans'"
+          >Preeknommer</label
+        >
+        <label for="id" *ngIf="currentLanguage === 'Nederlands'"
+          >Preeknummer</label
+        >
+        <input
+          type="text"
+          id="id"
+          name="id"
+          required
+          [(ngModel)]="filters.id"
+          class="form-control"
+          class="smaller"
+        />
+
+        <label for="beginjaar">Net 1 jaar</label>
+        <input
+          type="text"
+          id="begin"
+          name="begin"
+          class="preekjaar beginjaar form-control"
+          required
+          [(ngModel)]="filters.eenjaar"
+        />
+
+        <label for="beginjaar">&nbsp;&nbsp;&nbsp;&nbsp; Of Beginjaar</label>
+        <input
+          type="text"
+          id="begin"
+          name="begin"
+          class="preekjaar beginjaar form-control"
+          required
+          [(ngModel)]="filters.begin"
+        />
+
+        <label for="eindjaar">Tot Eindjaar</label>
+        <input
+          type="text"
+          id="eind"
+          name="eind"
+          class="preekjaar eindjaar form-control"
+          required
+          [(ngModel)]="filters.eind"
+        />
+      </div>
+
+      <label for="tema" *ngIf="currentLanguage === 'Afrikaans'"
+        >Soekwoord in digitale preke</label
+      >
+      <label for="tema" *ngIf="currentLanguage === 'Nederlands'"
+        >Zoekwoord in digitale preke</label
+      >
+      <input
+        type="text"
+        id="tema"
+        name="tema"
+        required
+        [(ngModel)]="filters.tema"
+        class="form-control"
+      />
+
+      <label for="tema" *ngIf="currentLanguage === 'Afrikaans'"
+        >Soekwoord in tema</label
+      >
+      <label for="tema" *ngIf="currentLanguage === 'Nederlands'"
+        >Zoekwoord in thema</label
+      >
+      <input
+        type="text"
+        id="tema"
+        name="tema"
+        required
+        [(ngModel)]="filters.tema"
+        class="form-control"
+      />
+      <br />
+
+      <div class="form-group">
+        <label for="taal" *ngIf="currentLanguage === 'Afrikaans'"
+          >Teks-opsie</label
+        >
+        <label for="taal" *ngIf="currentLanguage === 'Nederlands'"
+          >Tekst-optie</label
+        >
+        <div class="radio-options">
+          <label>
+            <input
+              type="radio"
+              name="teksopsie"
+              [(ngModel)]="filters.teksopsie"
+              value="Als"
+              class="form-control"
+              required
+              checked
+            />
+            {{ currentLanguage === "Afrikaans" ? "Almal" : "Alle" }}
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="teksopsie"
+              [(ngModel)]="filters.teksopsie"
+              value="P"
+              class="form-control"
+              required
+            />
+            {{
+              currentLanguage === "Afrikaans" ? "Preek Tekste" : "Preekteksten"
+            }}
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="teksopsie"
+              [(ngModel)]="filters.teksopsie"
+              value="L"
+              class="form-control"
+              required
+            />
+            {{
+              currentLanguage === "Afrikaans" ? "Lees Tekste" : "Leesteksten"
+            }}
+          </label>
+        </div>
+      </div>
+      <br />
+
+      <div class="form-group">
+        <label for="taal">Taal</label>
+        <div class="radio-options">
+          <!-- Almal Option -->
+          <label>
+            <input
+              type="radio"
+              name="taal"
+              [(ngModel)]="filters.taal"
+              value="Als"
+              class="form-control"
+              required
+              checked
+            />
+            {{ currentLanguage === "Afrikaans" ? "Almal" : "Alle" }}
+          </label>
+
+          <!-- Nederlands Option -->
+          <label>
+            <input
+              type="radio"
+              name="taal"
+              [(ngModel)]="filters.taal"
+              value="Nederlands"
+              class="form-control"
+              required
+            />
+            Nederlands
+          </label>
+
+          <!-- Afrikaans Option -->
+          <label>
+            <input
+              type="radio"
+              name="taal"
+              [(ngModel)]="filters.taal"
+              value="Afrikaans"
+              class="form-control"
+              required
+            />
+            Afrikaans
+          </label>
+        </div>
+      </div>
+      <br />
+
+      <div class="form-group">
+        <label for="bron">Bron</label>
+        <div class="radio-options">
+          <!-- Almal Option -->
+          <label>
+            <input
+              type="radio"
+              name="bron"
+              [(ngModel)]="filters.bron"
+              value="Als"
+              class="form-control"
+              required
+              checked
+            />
+            {{ currentLanguage === "Afrikaans" ? "Almal" : "Alle" }}
+          </label>
+
+          <!-- a: Servire Option -->
+          <label>
+            <input
+              type="radio"
+              name="bron"
+              [(ngModel)]="filters.bron"
+              value="a"
+              class="form-control"
+              required
+            />
+            Betty
+          </label>
+
+          <!-- b: Johan Option -->
+          <label>
+            <input
+              type="radio"
+              name="bron"
+              [(ngModel)]="filters.bron"
+              value="b"
+              class="form-control"
+              required
+            />
+            Johan
+          </label>
+
+          <!-- c: Gre Option -->
+          <label>
+            <input
+              type="radio"
+              name="bron"
+              [(ngModel)]="filters.bron"
+              value="c"
+              class="form-control"
+              required
+            />
+            Gre
+          </label>
+
+          <!-- d: Henk Option -->
+          <label>
+            <input
+              type="radio"
+              name="bron"
+              [(ngModel)]="filters.bron"
+              value="d"
+              class="form-control"
+              required
+            />
+            Henk
+          </label>
+
+          <!-- e: Geri Option -->
+          <label>
+            <input
+              type="radio"
+              name="bron"
+              [(ngModel)]="filters.bron"
+              value="e"
+              class="form-control"
+              required
+            />
+            GeRi
+          </label>
+        </div>
+      </div>
+      <br />
+
+      <button
+        [class.plus]="!isOldTestamentVisible"
+        class="min-btn"
+        mat-button
+        (click)="toggleOldTestamentVisibility()"
+      >
+        {{
+          isOldTestamentVisible
+            ? currentLanguage === "Afrikaans"
+              ? "Versteek"
+              : "Verberg"
+            : currentLanguage === "Afrikaans"
+            ? "Wys"
+            : "Toon"
+        }}
+        {{
+          currentLanguage === "Afrikaans"
+            ? "Ou Testament boeke"
+            : "Oude Testament boeken"
+        }}
+      </button>
+
+      <!-- Checkboxes Section -->
+      <div class="checkboxes-container" *ngIf="isOldTestamentVisible">
+        <!-- Label and button -->
+        <div class="label-button-container">
+          <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
+            >Kies een of meer boeke</label
+          >
+          <label for="nt" *ngIf="currentLanguage === 'Nederlands'"
+            >Kies één of meer boeken</label
+          >
+        </div>
+
+        <!-- Checkboxes -->
+        <div
+          *ngFor="let boek of outestament; let i = index"
+          class="book-container"
+        >
+          <label class="book-checks">
+            <input
+              type="checkbox"
+              [(ngModel)]="boek.checked"
+              (change)="boek.checked && openHoofstukkeDialog(boek)"
+            />
+            {{ boek.Boek }}
+          </label>
+        </div>
+      </div>
+
+      <button
+        [class.plus]="!isNewTestamentVisible"
+        class="min-btn"
+        mat-button
+        (click)="toggleNewTestamentVisibility()"
+      >
+        {{
+          isNewTestamentVisible
+            ? currentLanguage === "Afrikaans"
+              ? "Versteek"
+              : "Verberg"
+            : currentLanguage === "Afrikaans"
+            ? "Wys"
+            : "Toon"
+        }}
+        {{
+          currentLanguage === "Afrikaans"
+            ? "Nuwe Testament boeke"
+            : "Nieuwe Testament boeken"
+        }}
+      </button>
+
+      <!-- Checkboxes Section -->
+      <div class="checkboxes-container" *ngIf="isNewTestamentVisible">
+        <!-- Label and button -->
+        <div class="label-button-container">
+          <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
+            >Kies een of meer boeke</label
+          >
+          <label for="nt" *ngIf="currentLanguage === 'Nederlands'"
+            >Kies één of meer boeken</label
+          >
+        </div>
+
+        <!-- Checkboxes -->
+        <div
+          *ngFor="let boek of nuwetestament; let i = index"
+          class="book-container"
+        >
+          <label class="book-checks">
+            <input
+              type="checkbox"
+              [(ngModel)]="boek.checked"
+              (change)="boek.checked && openHoofstukkeDialog(boek)"
+            />
+            {{ boek.Boek }}
+          </label>
+          <!-- Conditionally display the "Hoofstukke" button -->
+        </div>
+      </div>
+
+      <button
+        [class.plus]="!isBelTestamentVisible"
+        class="min-btn"
+        mat-button
+        (click)="toggleBelTestamentVisibility()"
+      >
+        {{
+          isBelTestamentVisible
+            ? currentLanguage === "Afrikaans"
+              ? "Versteek"
+              : "Verberg"
+            : currentLanguage === "Afrikaans"
+            ? "Wys"
+            : "Toon"
+        }}
+        {{
+          currentLanguage === "Afrikaans"
+            ? "Belydenis-skfrifte"
+            : "Belijdenisgeschriften"
+        }}
+      </button>
+
+      <!-- Checkboxes Section -->
+      <div class="checkboxes-container" *ngIf="isBelTestamentVisible">
+        <!-- Label and button -->
+        <div class="label-button-container">
+          <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
+            >Kies een of meer boeke</label
+          >
+          <label for="nt" *ngIf="currentLanguage === 'Nederlands'"
+            >Kies één of meer boeken</label
+          >
+        </div>
+
+        <!-- Checkboxes -->
+        <label
+          class="book-checks"
+          *ngFor="let boek of belydenisse; let i = index"
+        >
+          <input type="checkbox" [(ngModel)]="boek.checked" />
+          {{ boek.Boek }}
+        </label>
+      </div>
+
+      <div class="checkboxes-container">
+        <div class="label-button-container">
+          <a
+            href="https://prekevdwaal.s3.eu-west-1.amazonaws.com/preke/romantiek.pdf"
+            target="_blank"
+            download="romantiek.pdf"
+            class="download-button"
+          >
+            Kies Romantiek
+          </a>
+        </div>
+      </div>
+
+      <hr />
+      <p *ngIf="currentLanguage === 'Afrikaans'">
+        Kliek op soek na keuses gemaak is
+      </p>
+      <p *ngIf="currentLanguage === 'Nederlands'">
+        Klik op zoeken na keuzes gemaakt zijn
+      </p>
+
+      <button
+        (click)="resetPage(); mergePreke()"
+        class="button btn btn-success"
+        *ngIf="currentLanguage === 'Afrikaans'"
+      >
+        Soek
+      </button>
+      <button
+        (click)="resetPage(); mergePreke()"
+        class="button btn btn-success"
+        *ngIf="currentLanguage === 'Nederlands'"
+      >
+        Zoeken
+      </button>
+    </div>
+  </div>
+</div>
+
+<div [hidden]="!loading" id="load">
+  <div>I</div>
+  <div>A</div>
+  <div>A</div>
+  <div>L</div>
+</div>
+<h2 *ngIf="currentLanguage === 'Afrikaans'">
+  Lys van preke gekies. Aantal: {{ prekeCount }}
+</h2>
+<h2 *ngIf="currentLanguage === 'Nederlands'">
+  Lijst van gekozen preken. Aantal: {{ prekeCount }}
+</h2>
+
+<table [hidden]="loading" id="prekeLys">
+  <!-- Afrikaans -->
+  <tr *ngIf="currentLanguage === 'Afrikaans'">
+    <th>Preek-nommer</th>
+    <th>Preek-jaar</th>
+    <th>Bron</th>
+    <th>Taal</th>
+    <th>Tema</th>
+    <th>Preek-teks</th>
+    <th>Sien Preek</th>
+  </tr>
+  <!-- Dutch -->
+  <tr *ngIf="currentLanguage === 'Nederlands'">
+    <th>Preeknummer</th>
+    <th>Preekjaar</th>
+    <th>Bron</th>
+    <th>Taal</th>
+    <th>Thema</th>
+    <th>Preektekst</th>
+    <th>Bekijk Preek</th>
+  </tr>
+
+  <tr
+    *ngFor="
+      let row of mergedBronne
+        | paginate
+          : { itemsPerPage: tableSize, currentPage: page, totalItems: count };
+      let i = index
+    "
+  >
+    <!--  
+    <td>
+      <mat-icon
+        aria-hidden="false"
+        (click)="openDialog(row)"
+        aria-label="Click vir meer inligting"
+        fontIcon="info"
+      ></mat-icon>
+    </td> -->
+    <td>{{ row.PreekNo }}</td>
+    <td>{{ row.Jaar }}</td>
+    <td>{{ row.KortBeskrywing }}</td>
+    <td>{{ row.Taal }}</td>
+    <td>{{ row.Tema }}</td>
+    <td>{{ row.Verse }}</td>
+    <td>
+      <a
+        href="https://prekevdwaal.s3.eu-west-1.amazonaws.com/preke/{{
+          row.PreekNo
+        }}.pdf"
+        target="_blank"
+      >
+        <div style="height: 100%; width: 100%">Laai af</div>
+      </a>
+    </td>
+  </tr>
+</table>
+
+<div [hidden]="loading" style="float: left">
+  <pagination-controls
+    previousLabel="Vorige"
+    nextLabel="Volgende"
+    (pageChange)="onTableDataChange($event)"
+    class="pagination"
+  ></pagination-controls>
+</div>
+<div [hidden]="loading" style="float: right">
+  <br />
+  <label>Aantal preke gekies: {{ prekeCount }}</label>
+</div>

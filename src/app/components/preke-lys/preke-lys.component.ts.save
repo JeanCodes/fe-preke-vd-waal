@@ -1,0 +1,400 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+
+import { ExampleDialogComponent } from './preke-lys-detail.component';
+import { HoofstukkeDialogComponent } from './hoofstukke-dialog/hoofstukke-dialog.component';
+
+import { PrekeService } from 'src/app/services/preke.service';
+import { FinaalPrekeService } from 'src/app/services/finaal_preke.service';
+import { BybelBoekeService } from 'src/app/services/bybel-boeke.service';
+import { BronneService } from 'src/app/services/bronne.service';
+import { TeksteService } from 'src/app/services/tekste.service';
+
+@Component({
+  selector: 'app-preke-lys',
+  templateUrl: './preke-lys.component.html',
+  styleUrls: ['./preke-lys.component.css'],
+})
+export class PrekeLysComponent implements OnInit {
+  boeke: any;
+  preke: any;
+  finaal_preke: any;
+  bronne: any;
+  tekste: any;
+  mergedPreke: any = [];
+  mergedBoeke: any = [];
+  mergedBronne: any = [];
+  preFilter: any = [];
+  relevantChapters: any = [];
+  outestament: any = [];
+  nuwetestament: any = [];
+  uniqueGroupedByBoek: any = {};
+  romantiek: any = [];
+  ouTestamentVerses: any = [];
+  nuweTestamentVerses: any = [];
+  tema = '';
+  checkedChaptersState: { boek: string; chapter: number; checked: boolean }[] =
+    [];
+  dataSource: any = '';
+  prekeCount: number = 0;
+  belydenisse: any;
+  belydenisse_gekies: any;
+  page: number = 1;
+  count: number = 0;
+  tableSize: number = 10;
+  data: any;
+  filters = {
+    tema: '',
+    id: '',
+    taal: 'Als',
+    bron: 'Als',
+    begin: '',
+    eind: '',
+    skandering: 'Als',
+    teksopsie: 'Als',
+  };
+
+  public loading = true;
+
+  constructor(
+    private prekeService: PrekeService,
+    private finaalPrekeService: FinaalPrekeService,
+    private bybelBoekeService: BybelBoekeService,
+    private bronneService: BronneService,
+    private teksteService: TeksteService,
+    private formBuilder: FormBuilder,
+    private ReactiveFormsModule: ReactiveFormsModule,
+    public dialog: MatDialog,
+  ) {}
+
+  ngOnInit(): void {
+    console.log('ngOnInit');
+    this.retrievePreke();
+  }
+  isOldTestamentVisible = false;
+  isNewTestamentVisible = false;
+  isBelTestamentVisible = false;
+  isRomantiekVisible = false;
+
+  toggleRomantiekVisibility() {
+    this.isRomantiekVisible = !this.isRomantiekVisible;
+  }
+  toggleBelTestamentVisibility() {
+    this.isBelTestamentVisible = !this.isBelTestamentVisible;
+  }
+  toggleNewTestamentVisibility() {
+    this.isNewTestamentVisible = !this.isNewTestamentVisible;
+  }
+
+  toggleOldTestamentVisibility() {
+    this.isOldTestamentVisible = !this.isOldTestamentVisible;
+  }
+
+  checkAllOldTestament() {
+    for (let boek of this.outestament) {
+      boek.checked = true;
+    }
+  }
+
+  uncheckAllOldTestament() {
+    for (let boek of this.outestament) {
+      boek.checked = false;
+    }
+  }
+
+  checkAllNewTestament() {
+    for (let boek of this.nuwetestament) {
+      boek.checked = true;
+    }
+  }
+
+  uncheckAllNewTestament() {
+    for (let boek of this.nuwetestament) {
+      boek.checked = false;
+    }
+  }
+
+  checkAllConfessions() {
+    for (let boek of this.belydenisse) {
+      boek.checked = true;
+    }
+  }
+
+  uncheckAllConfessions() {
+    for (let boek of this.belydenisse) {
+      boek.checked = false;
+    }
+  }
+  
+  checkRomantiek() {
+    for (let boek of this.romantiek) {
+      boek.checked = true;
+    }
+  }
+
+  uncheckRomantiek() {
+    for (let boek of this.romantiek) {
+      boek.checked = false;
+    }
+  }
+
+  filterPreke() {
+    this.preFilter = this.mergedBronne;
+    if (this.filters.begin) {
+      const filteredDataBegin = this.mergedBronne.filter(
+        (item: any) => Number(item.Jaar) >= Number(this.filters.begin),
+      );
+      this.mergedBronne = filteredDataBegin;
+    }
+
+    if (this.filters.eind) {
+      const filteredDataEind = this.mergedBronne.filter(
+        (item: any) => Number(item.Jaar) <= Number(this.filters.eind),
+      );
+      console.log('filteredDataEind: ', filteredDataEind);
+      this.mergedBronne = filteredDataEind;
+    }
+
+    if (this.filters.id) {
+      const filteredData = this.mergedBronne.filter(
+        (item: any) => Number(item.PreekNo) === Number(this.filters.id),
+      );
+      this.mergedBronne = filteredData;
+    }
+
+    if (this.filters.tema) {
+      const filteredDataTema = this.mergedBronne.filter(
+        (item: any) => item.Tema && item.Tema.includes(this.filters.tema),
+      );
+      console.log('Tema: ', filteredDataTema);
+      this.mergedBronne = filteredDataTema;
+    }
+
+    if (this.filters.teksopsie != 'Als' && this.filters.teksopsie != 'Almal') {
+      const filteredDataTeksOpsie = this.mergedBronne.filter(
+        (item: any) => item.P_L_B === this.filters.teksopsie,
+      );
+      this.mergedBronne = filteredDataTeksOpsie;
+    }
+
+    if (this.filters.taal != 'Als' && this.filters.taal != 'Almal') {
+      const filteredDataTaal = this.mergedBronne.filter(
+        (item: any) => item.Taal === this.filters.taal,
+      );
+      this.mergedBronne = filteredDataTaal;
+    }
+
+    if (this.filters.bron != 'Als' && this.filters.bron != 'Almal') {
+      const filteredDataBron = this.mergedBronne.filter(
+        (item: any) => item.Bron === this.filters.bron,
+      );
+      this.mergedBronne = filteredDataBron;
+    }
+
+    this.mergedBronne = this.mergedBronne.filter(
+      (bron: any) => bron.checked === true,
+    );
+    this.checkedChaptersState = this.checkedChaptersState.filter(
+      (item: any) => item.checked,
+    );
+    console.log('this.checkedChaptersState: ', this.checkedChaptersState);
+    console.log('this.mergedBronne: ', this.mergedBronne);
+
+    this.mergedBronne = this.mergedBronne.filter((mergedItem: any) =>
+      this.checkedChaptersState.some(
+        (checkedItem) =>
+          checkedItem.boek === mergedItem.Boek &&
+          checkedItem.chapter === Number(mergedItem.Hoofstuk),
+      ),
+    );
+    console.log('this.checkedChaptersState: ', this.checkedChaptersState);
+    console.log('this.mergedBronne: ', this.mergedBronne);
+
+    this.prekeCount = this.mergedBronne.length;
+
+    this.loading = false;
+  }
+
+  mergePreke() {
+    this.loading = true;
+    this.mergedBronne = [];
+    this.mergedPreke = [];
+    this.mergedBoeke = [];
+    this.preke = this.finaal_preke;
+    for (let i = 0; i < this.preke.length; i++) {
+      this.mergedPreke.push({
+        ...this.preke[i],
+        ...this.tekste.find(
+          (itmInner: any) => itmInner.PreekNo === this.preke[i].PreekNo,
+        ),
+      });
+    }
+
+    for (let i = 0; i < this.mergedPreke.length; i++) {
+      this.mergedBoeke.push({
+        ...this.mergedPreke[i],
+        ...this.boeke.find(
+          (itmInner: any) => itmInner.BoekNo === this.mergedPreke[i].BoekNo,
+        ),
+      });
+    }
+
+    for (let i = 0; i < this.mergedBoeke.length; i++) {
+      this.mergedBronne.push({
+        ...this.mergedBoeke[i],
+        ...this.bronne.find(
+          (itmInner: any) => itmInner.BronNo === this.mergedBoeke[i].Bron,
+        ),
+      });
+    }
+    console.log('this.mergedBronne: ',this.mergedBronne);
+//this.checkedChaptersState = this.mergedBronne.map((item:any) => ({
+//    boek: item.Boek,
+//    chapter: parseInt(item.Hoofstuk, 10), // Convert the Hoofstuk string to a number
+//    checked: true
+//}));
+
+    this.filterPreke();
+  }
+
+  retrieveTekste(): void {
+    this.teksteService.getAll().subscribe(
+      (data) => {
+        this.tekste = data;
+        this.mergePreke();
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  }
+
+  retrieveBronne(): void {
+    this.bronneService.getAll().subscribe(
+      (data) => {
+        this.bronne = data;
+        this.retrieveTekste();
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  }
+
+  retrieveBoeke(): void {
+    this.bybelBoekeService.getAll().subscribe(
+      (data) => {
+        this.boeke = data;
+        this.romantiek = this.boeke.filter((a: any) => {
+          if (a.OT_NT_BEL == 'Romantiek') {
+            return a;
+          }
+        });
+        this.outestament = this.boeke.filter((a: any) => {
+          if (a.OT_NT_BEL == 'Ou Testament') {
+            return a;
+          }
+        });
+        this.nuwetestament = this.boeke.filter((a: any) => {
+          if (a.OT_NT_BEL == 'Nuwe Testament') {
+            return a;
+          }
+        });
+        this.belydenisse = this.boeke.filter((a: any) => {
+          if (a.OT_NT_BEL == 'Belydenisse') {
+            return a;
+          }
+        });
+        this.retrieveBronne();
+//	this.checkAllConfessions();
+//	this.checkRomantiek();
+//	this.checkAllNewTestament();
+//	this.checkAllOldTestament();
+
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  }
+
+  retrieveFinaalPreke(): void {
+    this.finaalPrekeService.getAll().subscribe(
+      (data) => {
+        this.finaal_preke = data;
+        this.retrieveBoeke();
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  }
+
+  retrievePreke(): void {
+    this.prekeService.getAll().subscribe(
+      (data) => {
+        this.preke = data;
+        this.retrieveFinaalPreke();
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  }
+
+  onTableDataChange(event: any) {
+    this.page = event;
+    this.retrievePreke();
+  }
+
+  openDialog(enkelePreek: any) {
+    let dialogRef = this.dialog.open(ExampleDialogComponent, {
+      width: '500px',
+      data: enkelePreek,
+    });
+  }
+
+  openHoofstukkeDialog(boek: any) {
+  console.log('openHoofstukkeDialog this.mergedBronne: ',this.mergedBronne);
+    this.relevantChapters = this.preFilter.filter(
+      (item: any) => item.BoekNo === boek.BoekNo,
+    );
+    this.relevantChapters = (
+      [
+        ...new Set(
+          this.relevantChapters.map((item: any) => Number(item.Hoofstuk)),
+        ),
+      ] as number[]
+    ).sort((a, b) => a - b);
+    const dataToSend = {
+      boek: boek.Boek,
+      boekno: boek.BoekNo,
+      relevantChapters: this.relevantChapters,
+      checkedChaptersState: this.checkedChaptersState,
+    };
+    const dialogRef = this.dialog.open(HoofstukkeDialogComponent, {
+      data: dataToSend,
+    });
+
+    dialogRef.afterClosed().subscribe((returnData) => {
+      let onlyChapters = returnData.checkedStates;
+      this.checkedChaptersState = this.checkedChaptersState.filter(
+        (item: any) =>
+          !onlyChapters.some(
+            (returnItem: any) => returnItem.boek === item.boek,
+          ),
+      );
+
+      this.checkedChaptersState = [
+        ...this.checkedChaptersState,
+        ...onlyChapters,
+      ];
+    });
+  }
+}

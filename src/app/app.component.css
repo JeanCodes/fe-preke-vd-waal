@@ -1,0 +1,171 @@
+.sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* This ensures the navbar stays above other content */
+}
+
+.kies-taal {
+  padding-top:10px;
+}
+
+.mainbar {
+  background-image: url(https://prekevdwaal.s3.eu-west-1.amazonaws.com/InBackground.jpg);
+}
+
+.sidebar {
+  width: 2.5%;
+  min-height: 100vh;
+  height: max-content;
+  background-image: url(https://prekevdwaal.s3.eu-west-1.amazonaws.com/InBackground.jpg);
+  float: left;
+  position: sticky;
+  top: 0;
+}
+
+.main-content {
+  width: 95%;
+  float: left;
+}
+
+.leftbar {
+  width: 0%;
+  float: left;
+}
+
+.mainbar {
+  width: 100%;
+  float: left;
+}
+
+.rightbar {
+  width: 0%;
+  float: left;
+}
+
+h1 {
+  padding: 20px;
+  text-align: center;
+}
+
+.center {
+  margin: auto;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #892B21;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #892B21;
+}
+
+li a:not(.active){ 
+  color: white;
+}
+
+li a:active {
+  background-color: #04AA6D;
+  color: #b4a275;
+}
+
+.topnav-right {
+  float: right;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 160px;
+  height: 30px;
+  vertical-align: middle;
+  margin: 0 10px;
+  padding: 10px 20px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  background-color: #D7A975;
+  border-radius: 15px;
+  transition: .4s;
+}
+
+.slider-button {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 50%;
+  height: 26px;
+  background-color: #892b21;
+  border-radius: 15px;
+  transition: .4s;
+}
+
+#languageLabel {
+  position: absolute;
+  top: 50%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  transition: .4s;
+  pointer-events: none;
+}
+
+input:checked + .slider .slider-button {
+  left: 48%;
+}
+
+input:checked + .slider #languageLabel {
+  left: 25%;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .sidebar, .leftbar, .rightbar {
+    display: none;
+  }
+
+  .main-content {
+    width: 100%;
+  }
+
+  ul {
+    flex-direction: column;
+  }
+
+  li {
+    float: none;
+    text-align: center;
+  }
+
+  .topnav-right {
+    float: none;
+  }
+}
+

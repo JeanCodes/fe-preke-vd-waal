@@ -1,0 +1,28 @@
+ul,ol[type="1"] {
+  margin: auto;
+  width: 90%;
+  padding-left: 50px;
+}
+
+.center {
+  margin: auto;
+  width: 90%;
+  padding: 10px;
+}
+
+/* Style the headers */
+h1 {
+  padding: 20px;
+  text-align: center;
+}
+h2 {
+  margin-BOTTOM: 0;
+  padding-left: 80px;
+  padding-top: 20px;
+  text-align: left;
+}
+
+p  {
+  margin-TOP: 0;
+}
+

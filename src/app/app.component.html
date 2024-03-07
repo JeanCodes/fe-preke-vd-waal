@@ -1,0 +1,41 @@
+<div>
+  <div class="leftbar">
+    <p></p>
+  </div>
+  <div class="mainbar">
+    <nav class="navbar navbar-expand navbar-dark bg-dark sticky-nav">
+      <ul id="navbar">
+        <li class="nav-item">
+          <a routerLink="home" class="navbar-brand" style="font-weight: bold"
+            >prekevdw</a
+          >
+        </li>
+
+        <li class="nav-item">
+          <label class="switch kies-taal">
+            <input type="checkbox" id="languageToggle" (change)="toggleLanguage($event)"/>
+            <div class="slider">
+              <span class="slider-button"></span>
+              <span id="languageLabel" style="color:white;">{{ language }}</span>
+            </div>
+          </label>
+        </li>
+
+        <li class="nav-item, topnav-right" style="{float: tight;}">
+          <a routerLink="help" class="nav-link">Help</a>
+        </li>
+        <li class="nav-item, topnav-right" style="{float: tight;}">
+          <a routerLink="preke" class="nav-link">Preke</a>
+        </li>
+        <li class="nav-item, topnav-right" style="{float: right;}">
+          <a routerLink="home" class="nav-link">Tuisblad</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="sidebar"></div>
+    <div class="main-content container mt-3">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <div class="rightbar"></div>
+</div>
