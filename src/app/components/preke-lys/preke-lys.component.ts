@@ -176,34 +176,44 @@ export class PrekeLysComponent implements OnInit {
       );
       this.mergedBronne = filteredDataTaal;
     }
-    console.log('this.mergedBronne: ', this.mergedBronne);
+    console.log('this.mergedBronne1: ', this.mergedBronne);
+    console.log('this.myFinalFilters1: ', this.myFinalFilters);
+    console.log('this.filters: ', this.filters);
     if (this.filters.bron != 'Als' && this.filters.bron != 'Almal') {
       const filteredDataBron = this.mergedBronne.filter(
         (item: any) => item.Bron === this.filters.bron,
       );
       this.mergedBronne = filteredDataBron;
+      console.log('this.mergedBronne First Inner: ', this.mergedBronne);
     }
-    if (
-      (this.filters.bron != 'Als' && this.filters.bron != 'Almal') ||
-      (this.filters.taal != 'Als' && this.filters.taal != 'Almal') ||
-      (this.filters.teksopsie != 'Als' && this.filters.teksopsie != 'Almal')
-    ) {
-      this.myFinalFilters.push(...this.mergedBronne);
-    }
-    this.mergedBronne = this.mergedBronne.filter(
-      (bron: any) => bron.checked === true,
-    );
+    //    if (
+    //      (this.filters.bron != 'Als' && this.filters.bron != 'Almal') ||
+    //      (this.filters.taal != 'Als' && this.filters.taal != 'Almal') ||
+    //      (this.filters.teksopsie != 'Als' && this.filters.teksopsie != 'Almal')
+    //    ) {
+    //      this.myFinalFilters.push(...this.mergedBronne);
+    //    }
+    //    console.log('this.myFinalFiltersSecondLast: ', this.myFinalFilters);
+    //    console.log('this.mergedBronne2: ', this.mergedBronne);
+    //    this.mergedBronne = this.mergedBronne.filter(
+    //      (bron: any) => bron.checked === true,
+    //    );
+    //    console.log('this.mergedBronne2.5: ', this.mergedBronne);
     this.checkedChaptersState = this.checkedChaptersState.filter(
       (item: any) => item.checked,
     );
-
-    this.mergedBronne = this.mergedBronne.filter((mergedItem: any) =>
-      this.myCheckedChapters.some(
-        (checkedItem) =>
-          checkedItem.boek === mergedItem.Boek &&
-          checkedItem.chapter === Number(mergedItem.Hoofstuk),
-      ),
-    );
+    //    console.log('this.mergedBronne3: ', this.mergedBronne);
+    //    console.log('this.checkedChaptersState: ', this.checkedChaptersState);
+    //    console.log('this.myCheckedChapters: ',this.myCheckedChapters);
+    //    this.mergedBronne = this.mergedBronne.filter((mergedItem: any) =>
+    //      this.myCheckedChapters.some(
+    //        (checkedItem) =>
+    //          checkedItem.boek === mergedItem.Boek &&
+    //          checkedItem.chapter === Number(mergedItem.Hoofstuk),
+    //      ),
+    //    );
+    console.log('this.mergedBronne4: ', this.mergedBronne);
+    console.log('this.myFinalFilters: ', this.myFinalFilters);
     this.myFinalFilters.push(...this.mergedBronne);
     this.myFinalFilters = this.myFinalFilters.map((item: any) => {
       if (item['0']) {
@@ -215,13 +225,26 @@ export class PrekeLysComponent implements OnInit {
         return item;
       }
     });
-
+    console.log('this.myFinalFilters: ', this.myFinalFilters);
     this.mergedBronne = this.myFinalFilters;
     this.mergedBronne = this.mergedBronne.filter(
       (itmInner: any) => itmInner.P_L_B === 'P',
     );
+    console.log('this.mergedBronne: ', this.mergedBronne);
     this.mergedBronne.sort((a: any, b: any) => a.PreekNo - b.PreekNo);
     this.prekeCount = this.mergedBronne.length;
+    //   this.filters = {
+    //     tema: '',
+    //     id: '',
+    //     taal: 'Als',
+    //     bron: 'Als',
+    //     begin: '',
+    //     eind: '',
+    //     eenjaar: '',
+    //     skandering: 'Als',
+    //     teksopsie: 'Als',
+    //   };
+
     this.loading = false;
   }
 

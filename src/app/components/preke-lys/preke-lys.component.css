@@ -150,7 +150,7 @@ label {
   flex-wrap: wrap; /*Allows items to wrap onto new lines as needed */
   display: flex;
   flex-basis: calc(
-    33.333% - 10px
+    20% - 10px
   ); /* Example for three items per row, adjust as necessary */
   display: flex;
   align-items: center; /* Aligns items vertically */

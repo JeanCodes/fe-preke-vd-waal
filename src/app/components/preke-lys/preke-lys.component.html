@@ -375,10 +375,7 @@
         </a>
       </div>
 
-      <!-- Checkboxes Section -->
-      <div class="checkboxes-container" *ngIf="isOldTestamentVisible">
-        <!-- Label and button -->
-        <div class="label-button-container">
+        <div class="label-button-container" *ngIf="isOldTestamentVisible">
           <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
             >Kies een of meer boeke</label
           >
@@ -386,7 +383,8 @@
             >Kies één of meer boeken</label
           >
         </div>
-        <br />
+      <!-- Checkboxes Section -->
+      <div class="checkboxes-container" *ngIf="isOldTestamentVisible">
         <!-- Checkboxes -->
         <label
           class="book-container"
@@ -397,33 +395,27 @@
         </label>
       </div>
 
-      <!-- Checkboxes Section -->
-      <div class="checkboxes-container" *ngIf="isNewTestamentVisible">
-        <!-- Label and button -->
-        <div class="label-button-container">
+
+        <div class="label-button-container" *ngIf="isNewTestamentVisible">
           <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
             >Kies een of meer boeke</label
           >
           <label for="nt" *ngIf="currentLanguage === 'Nederlands'"
             >Kies één of meer boeken</label
           >
-          <br />
         </div>
-
+      <!-- Checkboxes Section -->
+      <div class="checkboxes-container" *ngIf="isNewTestamentVisible">
         <!-- Checkboxes -->
         <label
-          class="book-checks"
+          class="book-container"
           *ngFor="let boek of nuwetestament; let i = index"
         >
           <input type="checkbox" [(ngModel)]="boek.checked" />
           {{ boek.Boek }}
         </label>
       </div>
-
-      <!-- Checkboxes Section -->
-      <div class="checkboxes-container" *ngIf="isBelTestamentVisible">
-        <!-- Label and button -->
-        <div class="label-button-container">
+        <div class="label-button-container" *ngIf="isBelTestamentVisible">
           <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
             >Kies een of meer boeke</label
           >
@@ -432,9 +424,11 @@
           >
         </div>
 
+      <!-- Checkboxes Section -->
+      <div class="checkboxes-container" *ngIf="isBelTestamentVisible">
         <!-- Checkboxes -->
         <label
-          class="book-checks"
+          class="book-container"
           *ngFor="let boek of belydenisse; let i = index"
         >
           <input type="checkbox" [(ngModel)]="boek.checked" />
