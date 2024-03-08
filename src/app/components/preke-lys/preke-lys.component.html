@@ -390,7 +390,7 @@
           class="book-container"
           *ngFor="let boek of outestament; let i = index"
         >
-          <input type="checkbox" [(ngModel)]="boek.checked" />
+          <input type="checkbox" [(ngModel)]="boek.checked" (change)="boek.checked && openHoofstukkeDialog(boek)"/>
           {{ boek.Boek }}
         </label>
       </div>
@@ -411,7 +411,7 @@
           class="book-container"
           *ngFor="let boek of nuwetestament; let i = index"
         >
-          <input type="checkbox" [(ngModel)]="boek.checked" />
+          <input type="checkbox" [checked]="boek.checked" (click)="handleCheckboxClick(boek, $event)"/>
           {{ boek.Boek }}
         </label>
       </div>
@@ -431,7 +431,7 @@
           class="book-container"
           *ngFor="let boek of belydenisse; let i = index"
         >
-          <input type="checkbox" [(ngModel)]="boek.checked" />
+          <input type="checkbox" [(ngModel)]="boek.checked" (change)="boek.checked && openHoofstukkeDialog(boek)"/>
           {{ boek.Boek }}
         </label>
       </div>
@@ -492,7 +492,7 @@
 
   <tr
     *ngFor="
-      let row of mergedBronne
+      let row of myFinalFilters
         | paginate
           : { itemsPerPage: tableSize, currentPage: page, totalItems: count };
       let i = index

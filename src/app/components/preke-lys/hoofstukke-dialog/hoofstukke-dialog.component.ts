@@ -33,8 +33,8 @@ export class HoofstukkeDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    console.log(this.checkedStates);
+  ngOnInit() {
+    this.dialogRef.beforeClosed().subscribe(() => this.logSelectedItems());
   }
 
   checkAllHoofstukke(): void {
