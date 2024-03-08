@@ -27,6 +27,7 @@ export class HoofstukkeDialogComponent implements OnInit {
     } else {
       this.checkedStates = this.data.relevantChapters.map((chapter: any) => ({
         boek: this.data.boek,
+        boekno: this.data.boekno,
         chapter,
         checked: false,
       }));

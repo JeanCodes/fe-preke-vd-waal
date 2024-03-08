@@ -44,7 +44,12 @@ export class PrekeLysComponent implements OnInit {
   tema = '';
   checkedChaptersState: { boek: string; chapter: number; checked: boolean }[] =
     [];
-  myCheckedChapters: { boek: string; chapter: number; checked: boolean }[] = [];
+  myCheckedChapters: {
+    boek: string;
+    boekno: number;
+    chapter: number;
+    checked: boolean;
+  }[] = [];
   dataSource: any = '';
   prekeCount: number = 0;
   belydenisse: any;
@@ -57,6 +62,7 @@ export class PrekeLysComponent implements OnInit {
   private langSubscription!: Subscription;
   filters = {
     tema: '',
+    digitaalpreke: '', // Make sure this line is included
     id: '',
     taal: 'Als',
     bron: 'Als',
@@ -101,6 +107,21 @@ export class PrekeLysComponent implements OnInit {
   }
   toggleOldTestamentVisibility() {
     this.isOldTestamentVisible = !this.isOldTestamentVisible;
+  }
+
+  uncheckAllBooks(): void {
+    this.outestament.forEach((boek: any) => {
+      boek.checked = false;
+    });
+    this.nuwetestament.forEach((boek: any) => {
+      boek.checked = false;
+    });
+    this.belydenisse.forEach((boek: any) => {
+      boek.checked = false;
+    });
+    this.isBelTestamentVisible = false;
+    this.isNewTestamentVisible = false;
+    this.isOldTestamentVisible = false;
   }
 
   filterPreke() {
@@ -148,6 +169,8 @@ export class PrekeLysComponent implements OnInit {
       );
       this.myFinalFilters.push(...filteredData);
     }
+    console.log('this.myFinalFilters: ', this.myFinalFilters);
+    console.log('this.filters: ', this.filters);
 
     //Filtering mergedBronne to only include teksopsies selected
     if (this.filters.teksopsie != 'Als' && this.filters.teksopsie != 'Almal') {
@@ -170,6 +193,20 @@ export class PrekeLysComponent implements OnInit {
       );
       this.myFinalFilters = filteredDataBron;
     }
+    if (this.myCheckedChapters && this.myCheckedChapters.length > 0) {
+      this.myFinalFilters = this.myFinalFilters.filter((finalFilterItem: any) =>
+        this.myCheckedChapters.some(
+          (checkedChapter) =>
+            Number(finalFilterItem.Hoofstuk) ===
+              Number(checkedChapter.chapter) &&
+            Number(finalFilterItem.BoekNo) === Number(checkedChapter.boekno),
+        ),
+      );
+    }
+    
+    this.myFinalFilters = this.myFinalFilters.filter((item:any) => {
+      return this.filters.tema === "" || item.Tema.toLowerCase().includes(this.filters.tema.toLowerCase());
+    });
 
     interface MyFinalFilterItem {
       id: number;
@@ -204,7 +241,18 @@ export class PrekeLysComponent implements OnInit {
     //Sorting myFinalFilters by PreekNo
     this.myFinalFilters.sort((a: any, b: any) => a.PreekNo - b.PreekNo);
     this.prekeCount = this.myFinalFilters.length;
-
+    this.filters = {
+      tema: '',
+      id: '',
+      taal: 'Als',
+      bron: 'Als',
+      begin: '',
+      eind: '',
+      eenjaar: '',
+      skandering: 'Als',
+      teksopsie: 'Als',
+    };
+    this.uncheckAllBooks();
     this.loading = false;
   }
 
@@ -360,18 +408,15 @@ export class PrekeLysComponent implements OnInit {
       data: enkelePreek,
     });
   }
-async handleCheckboxClick(boek: any, event: MouseEvent): Promise<void> {
-  event.preventDefault(); // Prevent the checkbox from changing state immediately.
-
-  const shouldCheck = await this.openHoofstukkeDialog(boek);
-  if (shouldCheck) {
-    boek.checked = !boek.checked; // Only change the checked state if the condition is met.
+  async handleCheckboxClick(boek: any, event: MouseEvent): Promise<void> {
+    event.preventDefault(); // Prevent the checkbox from changing state immediately.
+    const shouldCheck = await this.openHoofstukkeDialog(boek);
+    boek.checked = shouldCheck;
   }
-}
 
   openHoofstukkeDialog(boek: any): Promise<boolean> {
-    console.log('boek: ',boek);
-    console.log('this.mergedBronne: ',this.mergedBronne);
+    console.log('boek: ', boek);
+    console.log('this.mergedBronne: ', this.mergedBronne);
     this.relevantChapters = this.mergedBronne.filter(
       (item: any) => item.BoekNo === Number(boek.BoekNo),
     );
@@ -389,40 +434,49 @@ async handleCheckboxClick(boek: any, event: MouseEvent): Promise<void> {
       relevantChapters: this.relevantChapters,
       checkedChaptersState: this.checkedChaptersState,
     };
-  // Return a new Promise
-  return new Promise<boolean>((resolve) => {
-    const dialogRef = this.dialog.open(HoofstukkeDialogComponent, {
-      data: dataToSend,
-    });
-
-    dialogRef.afterClosed().subscribe((returnData) => {
-      let onlyChapters = returnData.checkedStates;
-      let checkedChapters = onlyChapters.filter(
-        (chapter: any) => chapter.checked,
-      );
-
-      checkedChapters.forEach((checkedChapter: any) => {
-        this.myCheckedChapters.push(checkedChapter);
+    // Return a new Promise
+    return new Promise<boolean>((resolve) => {
+      const dialogRef = this.dialog.open(HoofstukkeDialogComponent, {
+        data: dataToSend,
       });
 
-      this.checkedChaptersState = this.checkedChaptersState.filter(
-        (item: any) =>
-          !onlyChapters.some(
-            (returnItem: any) => returnItem.boek === item.boek,
-          ),
-      );
+      dialogRef.afterClosed().subscribe((returnData) => {
+        this.myCheckedChapters = this.myCheckedChapters.filter(
+          (chapter: any) => chapter.boek !== boek.Boek,
+        );
+        console.log('returnData: ', returnData);
+        let onlyChapters = returnData.checkedStates;
+        console.log('onlyChapters: ', onlyChapters);
+        console.log('boek: ', boek);
+        console.log('this.myCheckedChapters: ', this.myCheckedChapters);
+        let checkedChapters = onlyChapters.filter(
+          (chapter: any) => chapter.checked,
+        );
+        console.log('checkedChapters: ', checkedChapters);
+        checkedChapters.forEach((checkedChapter: any) => {
+          this.myCheckedChapters.push(checkedChapter);
+        });
 
-      this.checkedChaptersState = [
-        ...this.checkedChaptersState,
-        ...onlyChapters,
-      ];
-      let checkedCount = returnData.checkedStates.filter((chapter: any) => chapter.checked).length;
+        this.checkedChaptersState = this.checkedChaptersState.filter(
+          (item: any) =>
+            !onlyChapters.some(
+              (returnItem: any) => returnItem.boek === item.boek,
+            ),
+        );
 
-    resolve(checkedCount > 0);
-    console.log('checkedCount: ',checkedCount);
-    console.log('this.checkedChaptersState: ',this.checkedChaptersState);
-    console.log('this.myCheckedChapters: ',this.myCheckedChapters);
+        this.checkedChaptersState = [
+          ...this.checkedChaptersState,
+          ...onlyChapters,
+        ];
+        let checkedCount = returnData.checkedStates.filter(
+          (chapter: any) => chapter.checked,
+        ).length;
+
+        resolve(checkedCount > 0);
+        console.log('checkedCount: ', checkedCount);
+        console.log('this.checkedChaptersState: ', this.checkedChaptersState);
+        console.log('this.myCheckedChapters: ', this.myCheckedChapters);
+      });
     });
-  });
   }
 }
