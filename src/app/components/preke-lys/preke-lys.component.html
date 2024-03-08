@@ -321,34 +321,6 @@
           }}
         </button>
 
-        <!-- Checkboxes Section -->
-        <div class="checkboxes-container" *ngIf="isOldTestamentVisible">
-          <!-- Label and button -->
-          <div class="label-button-container">
-            <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
-              >Kies een of meer boeke</label
-            >
-            <label for="nt" *ngIf="currentLanguage === 'Nederlands'"
-              >Kies één of meer boeken</label
-            >
-          </div>
-
-          <!-- Checkboxes -->
-          <div
-            *ngFor="let boek of outestament; let i = index"
-            class="book-container"
-          >
-            <label class="book-checks">
-              <input
-                type="checkbox"
-                [(ngModel)]="boek.checked"
-                (change)="boek.checked && openHoofstukkeDialog(boek)"
-              />
-              {{ boek.Boek }}
-            </label>
-          </div>
-        </div>
-
         <button
           [class.plus]="!isNewTestamentVisible"
           class="min-btn"
@@ -370,35 +342,6 @@
               : "Nieuwe Testament boeken"
           }}
         </button>
-
-        <!-- Checkboxes Section -->
-        <div class="checkboxes-container" *ngIf="isNewTestamentVisible">
-          <!-- Label and button -->
-          <div class="label-button-container">
-            <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
-              >Kies een of meer boeke</label
-            >
-            <label for="nt" *ngIf="currentLanguage === 'Nederlands'"
-              >Kies één of meer boeken</label
-            >
-          </div>
-
-          <!-- Checkboxes -->
-          <div
-            *ngFor="let boek of nuwetestament; let i = index"
-            class="book-container"
-          >
-            <label class="book-checks">
-              <input
-                type="checkbox"
-                [(ngModel)]="boek.checked"
-                (change)="boek.checked && openHoofstukkeDialog(boek)"
-              />
-              {{ boek.Boek }}
-            </label>
-            <!-- Conditionally display the "Hoofstukke" button -->
-          </div>
-        </div>
 
         <button
           [class.plus]="!isBelTestamentVisible"
@@ -422,39 +365,81 @@
           }}
         </button>
 
-        <!-- Checkboxes Section -->
-        <div class="checkboxes-container" *ngIf="isBelTestamentVisible">
-          <!-- Label and button -->
-          <div class="label-button-container">
-            <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
-              >Kies een of meer boeke</label
-            >
-            <label for="nt" *ngIf="currentLanguage === 'Nederlands'"
-              >Kies één of meer boeken</label
-            >
-          </div>
+        <a
+          href="https://prekevdwaal.s3.eu-west-1.amazonaws.com/preke/romantiek.pdf"
+          target="_blank"
+          download="romantiek.pdf"
+          class="download-button"
+        >
+          Kies Romantiek
+        </a>
+      </div>
 
-          <!-- Checkboxes -->
-          <label
-            class="book-checks"
-            *ngFor="let boek of belydenisse; let i = index"
+      <!-- Checkboxes Section -->
+      <div class="checkboxes-container" *ngIf="isOldTestamentVisible">
+        <!-- Label and button -->
+        <div class="label-button-container">
+          <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
+            >Kies een of meer boeke</label
           >
-            <input type="checkbox" [(ngModel)]="boek.checked" />
-            {{ boek.Boek }}
-          </label>
+          <label for="nt" *ngIf="currentLanguage === 'Nederlands'"
+            >Kies één of meer boeken</label
+          >
         </div>
-        <div class="checkboxes-container">
-          <div class="label-button-container">
-            <a
-              href="https://prekevdwaal.s3.eu-west-1.amazonaws.com/preke/romantiek.pdf"
-              target="_blank"
-              download="romantiek.pdf"
-              class="download-button"
-            >
-              Kies Romantiek
-            </a>
-          </div>
+        <br />
+        <!-- Checkboxes -->
+        <label
+          class="book-container"
+          *ngFor="let boek of outestament; let i = index"
+        >
+          <input type="checkbox" [(ngModel)]="boek.checked" />
+          {{ boek.Boek }}
+        </label>
+      </div>
+
+      <!-- Checkboxes Section -->
+      <div class="checkboxes-container" *ngIf="isNewTestamentVisible">
+        <!-- Label and button -->
+        <div class="label-button-container">
+          <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
+            >Kies een of meer boeke</label
+          >
+          <label for="nt" *ngIf="currentLanguage === 'Nederlands'"
+            >Kies één of meer boeken</label
+          >
+          <br />
         </div>
+
+        <!-- Checkboxes -->
+        <label
+          class="book-checks"
+          *ngFor="let boek of nuwetestament; let i = index"
+        >
+          <input type="checkbox" [(ngModel)]="boek.checked" />
+          {{ boek.Boek }}
+        </label>
+      </div>
+
+      <!-- Checkboxes Section -->
+      <div class="checkboxes-container" *ngIf="isBelTestamentVisible">
+        <!-- Label and button -->
+        <div class="label-button-container">
+          <label for="nt" *ngIf="currentLanguage === 'Afrikaans'"
+            >Kies een of meer boeke</label
+          >
+          <label for="nt" *ngIf="currentLanguage === 'Nederlands'"
+            >Kies één of meer boeken</label
+          >
+        </div>
+
+        <!-- Checkboxes -->
+        <label
+          class="book-checks"
+          *ngFor="let boek of belydenisse; let i = index"
+        >
+          <input type="checkbox" [(ngModel)]="boek.checked" />
+          {{ boek.Boek }}
+        </label>
       </div>
       <hr />
       <p *ngIf="currentLanguage === 'Afrikaans'">
@@ -482,12 +467,6 @@
   </div>
 </div>
 
-<div [hidden]="!loading" id="load">
-  <div>I</div>
-  <div>A</div>
-  <div>A</div>
-  <div>L</div>
-</div>
 <h2 *ngIf="currentLanguage === 'Afrikaans'">
   Lys van preke gekies. Aantal: {{ prekeCount }}
 </h2>
@@ -525,15 +504,6 @@
       let i = index
     "
   >
-    <!--  
-    <td>
-      <mat-icon
-        aria-hidden="false"
-        (click)="openDialog(row)"
-        aria-label="Click vir meer inligting"
-        fontIcon="info"
-      ></mat-icon>
-    </td> -->
     <td>{{ row.PreekNo }}</td>
     <td>{{ row.Jaar }}</td>
     <td>{{ row.KortBeskrywing }}</td>
@@ -564,4 +534,11 @@
 <div [hidden]="loading" style="float: right">
   <br />
   <label>Aantal preke gekies: {{ prekeCount }}</label>
+</div>
+
+<div [hidden]="!loading" id="load2">
+  <div>L</div>
+  <div>A</div>
+  <div>A</div>
+  <div>I</div>
 </div>

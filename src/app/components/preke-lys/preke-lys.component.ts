@@ -82,7 +82,6 @@ export class PrekeLysComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('ngOnInit');
     this.langSubscription = this.languageService.currentLanguage.subscribe(
       (lang) => {
         this.currentLanguage = lang;
@@ -109,58 +108,9 @@ export class PrekeLysComponent implements OnInit {
     this.isOldTestamentVisible = !this.isOldTestamentVisible;
   }
 
-  checkAllOldTestament() {
-    for (let boek of this.outestament) {
-      boek.checked = true;
-    }
-  }
-
-  uncheckAllOldTestament() {
-    for (let boek of this.outestament) {
-      boek.checked = false;
-    }
-  }
-
-  checkAllNewTestament() {
-    for (let boek of this.nuwetestament) {
-      boek.checked = true;
-    }
-  }
-
-  uncheckAllNewTestament() {
-    for (let boek of this.nuwetestament) {
-      boek.checked = false;
-    }
-  }
-
-  checkAllConfessions() {
-    for (let boek of this.belydenisse) {
-      boek.checked = true;
-    }
-  }
-
-  uncheckAllConfessions() {
-    for (let boek of this.belydenisse) {
-      boek.checked = false;
-    }
-  }
-
-  checkRomantiek() {
-    for (let boek of this.romantiek) {
-      boek.checked = true;
-    }
-  }
-
-  uncheckRomantiek() {
-    for (let boek of this.romantiek) {
-      boek.checked = false;
-    }
-  }
-
   filterPreke() {
     this.myFinalFilters = [];
     this.preFilter = this.mergedBronne;
-    console.log('this.preFilter: ', this.preFilter);
     if (this.filters.eenjaar && this.filters.eenjaar.length > 0) {
       const filteredData = this.mergedBronne.filter(
         (item: any) => Number(item.Jaar) === Number(this.filters.eenjaar),
@@ -210,7 +160,6 @@ export class PrekeLysComponent implements OnInit {
       const filteredDataTema = this.mergedBronne.filter(
         (item: any) => item.Tema && item.Tema.includes(this.filters.tema),
       );
-      console.log('Tema: ', filteredDataTema);
       this.myFinalFilters.push(...filteredDataTema);
     }
     console.log('this.filters.teksopsie: ', this.filters.teksopsie);
@@ -226,7 +175,6 @@ export class PrekeLysComponent implements OnInit {
         (item: any) => item.Taal === this.filters.taal,
       );
       this.mergedBronne = filteredDataTaal;
-      //this.myFinalFilters.push(...filteredDataTaal);
     }
     console.log('this.mergedBronne: ', this.mergedBronne);
     if (this.filters.bron != 'Als' && this.filters.bron != 'Almal') {
@@ -242,7 +190,6 @@ export class PrekeLysComponent implements OnInit {
     ) {
       this.myFinalFilters.push(...this.mergedBronne);
     }
-    console.log('this.myFinalFiltersSecondLast: ', this.myFinalFilters);
     this.mergedBronne = this.mergedBronne.filter(
       (bron: any) => bron.checked === true,
     );
@@ -251,7 +198,6 @@ export class PrekeLysComponent implements OnInit {
     );
 
     this.mergedBronne = this.mergedBronne.filter((mergedItem: any) =>
-      //      this.checkedChaptersState.some(
       this.myCheckedChapters.some(
         (checkedItem) =>
           checkedItem.boek === mergedItem.Boek &&
@@ -259,11 +205,6 @@ export class PrekeLysComponent implements OnInit {
       ),
     );
     this.myFinalFilters.push(...this.mergedBronne);
-    let desiredObject = [];
-    if (this.isRomantiekVisible) {
-      desiredObject = this.preFilter.find((item: any) => item.PreekNo === 1);
-      this.myFinalFilters.push(desiredObject);
-    }
     this.myFinalFilters = this.myFinalFilters.map((item: any) => {
       if (item['0']) {
         return {
@@ -294,16 +235,12 @@ export class PrekeLysComponent implements OnInit {
     this.mergedPreke = [];
     this.mergedBoeke = [];
     this.preke = this.finaal_preke;
-    console.log('this.mergedPreke: ', this.mergedPreke);
-    console.log('this.tekste :', this.tekste);
 
     this.preke.forEach((prekeItem: any) => {
-      // Find all matches in `this.tekste` for the current `prekeItem`
       const matches = this.tekste.filter(
         (itmInner: any) => itmInner.PreekNo === prekeItem.PreekNo,
       );
 
-      // For each match, merge it with `prekeItem` and add to `this.mergedPreke`
       matches.forEach((match: any) => {
         this.mergedPreke.push({
           ...prekeItem,
@@ -312,43 +249,31 @@ export class PrekeLysComponent implements OnInit {
       });
     });
 
-    console.log('this.mergedPreke: ', this.mergedPreke);
     this.mergedPreke.forEach((mergedPrekeItem: any) => {
-      // Find the first match in `this.boeke` for the current `mergedPrekeItem`
       const match = this.boeke.filter(
         (itmInner: any) => itmInner.BoekNo === mergedPrekeItem.BoekNo,
       );
 
       if (match) {
-        // If a match is found, merge it with `mergedPrekeItem` and add to `this.mergedBoeke`
         this.mergedBoeke.push({
           ...mergedPrekeItem,
           ...match,
         });
       } else {
-        // If no match is found, just push the original `mergedPrekeItem` into `this.mergedBoeke`
-        // This step ensures that items without a matching `BoekNo` are still included in the result.
-        // Remove this else block if you only want items in `this.mergedBoeke` that have a match.
         this.mergedBoeke.push(mergedPrekeItem);
       }
     });
 
     this.mergedBoeke.forEach((mergedBoekeItem: any) => {
-      // Find the first match in `this.bronne` for the current `mergedBoekeItem`
       const match = this.bronne.filter(
         (itmInner: any) => itmInner.BronNo === mergedBoekeItem.Bron,
       );
-      console.log('this.bronne: ', this.bronne);
       if (match) {
-        // If a match is found, merge it with `mergedBoekeItem` and add to `this.mergedBronne`
         this.mergedBronne.push({
           ...mergedBoekeItem,
           ...match,
         });
       } else {
-        // If no match is found, just push the original `mergedBoekeItem` into `this.mergedBronne`
-        // This ensures that items without a matching `BronNo` are still included in the result.
-        // Remove this else block if you only want items in `this.mergedBronne` that have a match.
         this.mergedBronne.push(mergedBoekeItem);
       }
     });
@@ -377,7 +302,6 @@ export class PrekeLysComponent implements OnInit {
     this.bronneService.getAll().subscribe(
       (data) => {
         this.bronne = data;
-        console.log('this.bronne: ', this.bronne);
         this.retrieveTekste();
       },
       (error) => {
@@ -411,10 +335,6 @@ export class PrekeLysComponent implements OnInit {
           }
         });
         this.retrieveBronne();
-        //	this.checkAllConfessions();
-        //	this.checkRomantiek();
-        //	this.checkAllNewTestament();
-        //	this.checkAllOldTestament();
       },
       (error) => {
         console.log(error);
@@ -426,7 +346,6 @@ export class PrekeLysComponent implements OnInit {
     this.finaalPrekeService.getAll().subscribe(
       (data) => {
         this.finaal_preke = data;
-        console.log('this.finaal_preke: ', this.finaal_preke);
         this.retrieveBoeke();
       },
       (error) => {
@@ -460,8 +379,6 @@ export class PrekeLysComponent implements OnInit {
   }
 
   openHoofstukkeDialog(boek: any) {
-    console.log('openHoofstukkeDialog this.mergedBronne: ', this.mergedBronne);
-    console.log('this.preFilter: ', this.preFilter);
     this.relevantChapters = this.preFilter.filter(
       (item: any) => item.BoekNo === 33,
     );
@@ -489,13 +406,10 @@ export class PrekeLysComponent implements OnInit {
         (chapter: any) => chapter.checked,
       );
 
-      // Push each checked chapter into myCheckedChapters
       checkedChapters.forEach((checkedChapter: any) => {
         this.myCheckedChapters.push(checkedChapter);
       });
 
-      console.log('this.myCheckedChapters: ', this.myCheckedChapters);
-      console.log('onlyChapters: ', onlyChapters);
       this.checkedChaptersState = this.checkedChaptersState.filter(
         (item: any) =>
           !onlyChapters.some(

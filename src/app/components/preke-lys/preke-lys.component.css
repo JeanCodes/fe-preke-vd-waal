@@ -21,6 +21,12 @@ input[type="radio"],
 .form-control {
   margin-right: 10px; /* Adds a margin to the right of inputs for spacing */
 }
+/* Style for text input fields to ensure uniformity and increased size */
+input[type="text"] {
+  margin-right: 10px; /* Adds a margin to the right of inputs for spacing */
+  height: 25px; /* Adjust height automatically based on padding and font size */
+  border: none;
+}
 
 /* Style for labels to improve readability */
 label {
@@ -35,7 +41,12 @@ label {
   margin: 5px; /* Adds margin around buttons for spacing */
   background-color: #d7a975;
   color: white;
+  display: inline-flex;
+  align-items: center; /* Center items if the button's height is more than its content */
+  justify-content: center; /* Center the text inside the button */
+  text-decoration: none; /* Removes underline from link */
   padding: 5px 10px; /* Padding inside buttons for a better appearance */
+  height: 30px;
   border: none; /* Removes border */
 }
 /* Enhances the visibility of the download button */
@@ -43,6 +54,10 @@ label {
   background-color: #d7a975;
   color: white;
   padding: 5px 10px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center; /* Center items if the button's height is more than its content */
+  justify-content: center; /* Center the text inside the button */
   text-decoration: none; /* Removes underline from link */
 }
 
@@ -73,7 +88,7 @@ label {
 
 /* Table Header Styling */
 #prekeLys th {
-  background-color: #892b21; /* Changes header background to a green shade for visual distinction */
+  background-color: #892b21;
   color: white; /* White text for contrast against the header background */
   font-weight: bold; /* Makes header text bold */
 }
@@ -122,8 +137,9 @@ label {
 
 /* Styles for the checkboxes container */
 .checkboxes-container {
-  display: flex; /* Use Flexbox for layout */
-  flex-wrap: wrap; /* Allows items to wrap onto new lines as needed */
+  flex-wrap: wrap; /*Allows items to wrap onto new lines as needed */
+  display: flex;
+  flex-basis: calc(33.333% - 10px);
   gap: 10px; /* Adds some space between checkbox items */
   margin-top: 20px; /* Adds some space above the container */
   width: 100%; /* Ensures the container takes up the full width */
@@ -131,6 +147,8 @@ label {
 
 /* Styles for individual book containers */
 .book-container {
+  flex-wrap: wrap; /*Allows items to wrap onto new lines as needed */
+  display: flex;
   flex-basis: calc(
     33.333% - 10px
   ); /* Example for three items per row, adjust as necessary */
@@ -140,7 +158,6 @@ label {
 
 /* Styles for labels within book containers for better alignment and appearance */
 .book-checks {
-  display: flex;
   align-items: center; /* Ensures label and checkbox are aligned */
   width: 100%; /* Ensures labels take the full width of their container */
 }
@@ -148,4 +165,38 @@ label {
 /* Optional: Style adjustments for checkboxes for consistency */
 .book-container input[type="checkbox"] {
   margin-right: 5px; /* Adds a small space between the checkbox and the label text */
+}
+
+#load {
+  position: fixed; /* Or absolute, depending on your layout */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  color: #892b21;
+  font-size: 3rem;
+  font-weight: bold;
+  overflow: hidden; /* Prevents any part of the scrolling text from overflowing the div */
+}
+
+#load div {
+  position: relative;
+  white-space: nowrap; /* Keeps the text in a single line */
+  animation: scrollText 5s linear infinite; /* Adjust time as needed */
+}
+
+@keyframes scrollText {
+  from {
+    right: 100%;
+  }
+  to {
+    right: -100%;
+  }
+}
+.pagination ::ng-deep .ngx-pagination .current {
+  background: #d7a975;
 }
