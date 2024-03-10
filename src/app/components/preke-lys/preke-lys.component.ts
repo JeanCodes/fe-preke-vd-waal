@@ -25,7 +25,6 @@ import { PrekeIndeksService } from 'src/app/services/preke_indeks.service';
   templateUrl: './preke-lys.component.html',
   styleUrls: ['./preke-lys.component.css'],
 })
-
 export class PrekeLysComponent implements OnInit {
   boeke: any;
   preke: any;
@@ -102,7 +101,7 @@ export class PrekeLysComponent implements OnInit {
         this.currentLanguage = lang;
       },
     );
-//    this.retrievePreke();
+    //    this.retrievePreke();
     this.retrievePrekeIndeks();
   }
   isOldTestamentVisible = false;
@@ -136,7 +135,7 @@ export class PrekeLysComponent implements OnInit {
 
   filterPreke() {
     this.myFinalFilters = [];
-    console.log('this.mergedBronne: ',this.mergedBronne);
+    console.log('this.mergedBronne: ', this.mergedBronne);
     // Apply 1 Jaar Filter
     if (this.filters.eenjaar && this.filters.eenjaar.length > 0) {
       const filteredData = this.mergedBronne.filter(
@@ -144,7 +143,7 @@ export class PrekeLysComponent implements OnInit {
       );
       this.myFinalFilters.push(...filteredData);
     }
-    console.log('this.myFinalFilters: ',this.myFinalFilters)
+    console.log('this.myFinalFilters: ', this.myFinalFilters);
     // Apply Begin & Eind Jaar Filter
     if (
       this.filters.begin &&
@@ -173,7 +172,7 @@ export class PrekeLysComponent implements OnInit {
       );
       this.myFinalFilters.push(...filteredDataEind);
     }
-    console.log('this.myFinalFilters1: ',this.myFinalFilters);
+    console.log('this.myFinalFilters1: ', this.myFinalFilters);
 
     // Adding Preek whose number was filled in
     if (this.filters.id && this.filters.id.length > 0) {
@@ -220,53 +219,62 @@ export class PrekeLysComponent implements OnInit {
       this.myFinalFilters = this.myFinalFilters.filter((finalFilterItem: any) =>
         this.myCheckedChapters.some(
           (checkedChapter) =>
-            Number(finalFilterItem.h_stuk) ===
-              Number(checkedChapter.chapter) &&
+            Number(finalFilterItem.h_stuk) === Number(checkedChapter.chapter) &&
             Number(finalFilterItem.boek) === Number(checkedChapter.boekno),
         ),
       );
     }
     console.log('this.myFinalFilters6: ', this.myFinalFilters);
-    
-    this.myFinalFilters = this.myFinalFilters.filter((item:any) => {
-      return this.filters.tema === "" || item.tema.toLowerCase().includes(this.filters.tema.toLowerCase());
+
+    this.myFinalFilters = this.myFinalFilters.filter((item: any) => {
+      return (
+        this.filters.tema === '' ||
+        item.tema.toLowerCase().includes(this.filters.tema.toLowerCase())
+      );
     });
     console.log('this.myFinalFilters7: ', this.myFinalFilters);
-    console.log('this.filters: ',this.filters);
+    console.log('this.filters: ', this.filters);
 
-//    interface MyFinalFilterItem {
-//      id: number;
-//      P_L_B: string;
-//      [key: string]: any; // Use specific types instead of any for a stricter type definition.
-//    }
-
-//    this.myFinalFilters = this.myFinalFilters.map((item: MyFinalFilterItem) => {
-//      // Amend KortBeskrywing if '0' property exists.
-//      if (item['0']) {
-//        return {
-//          ...item,
-//          KortBeskrywing: item['0'].KortBeskrywing,
-//        };
-//      } else {
-//        return item;
-//      }
-//    });
-    console.log('this.myFinalFilters8: ', this.myFinalFilters);
-
-    // Filter to show only items with P_L_B === 'P'.
-//    this.myFinalFilters = this.myFinalFilters.filter(
-//      (itmInner: MyFinalFilterItem) => itmInner['pl'] === 'P',
-//    );
-
+    interface MyFinalFilterItem {
+      id: number;
+      nr: number;
+      jaar: number;
+      taal: string;
+      teks: string;
+      boek: number;
+      h_stuk: number;
+      pl: string; // Make sure 'pl' is part of your interface
+      tema: string;
+      vorm: string;
+      bron: string;
+      boek_afk: string;
+      boek_vol: string;
+      createdAt: string;
+      updatedAt: string;
+    }
 
     console.log('this.myFinalFilters9: ', this.myFinalFilters);
-    // Remove duplicates based on the 'id' property.
+
+    // Initialize a map to track the unique nr with preference for 'P'
     const unique = new Map<number, MyFinalFilterItem>();
+
     this.myFinalFilters.forEach((item: MyFinalFilterItem) => {
-      unique.set(item.id, item);
+      const existingItem = unique.get(item.nr);
+      if (!existingItem) {
+        // If no item with this 'nr' has been added yet, add the current item
+        unique.set(item.nr, item);
+      } else {
+        // If an item with this 'nr' already exists, replace it only if the current item has 'pl' = 'P' and existing does not
+        if (item.pl === 'P' && existingItem.pl !== 'P') {
+          unique.set(item.nr, item);
+        }
+      }
     });
+
     this.myFinalFilters = Array.from(unique.values());
-    
+
+    this.myFinalFilters = Array.from(unique.values());
+
     console.log('this.myFinalFilters10: ', this.myFinalFilters);
     //Sorting myFinalFilters by PreekNo
     this.myFinalFilters.sort((a: any, b: any) => a.nr - b.nr);
@@ -301,17 +309,17 @@ export class PrekeLysComponent implements OnInit {
     this.mergedBoeke = [];
     this.preke = this.finaal_preke;
 
-//    this.preke.forEach((prekeItem: any) => {
-//      const matches = this.tekste.filter(
-//        (itmInner: any) => itmInner.PreekNo === prekeItem.PreekNo,
-//      );
-//      matches.forEach((match: any) => {
-//        this.mergedPreke.push({
-//          ...prekeItem,
-//          ...match,
-//        });
-//      });
-//    });
+    //    this.preke.forEach((prekeItem: any) => {
+    //      const matches = this.tekste.filter(
+    //        (itmInner: any) => itmInner.PreekNo === prekeItem.PreekNo,
+    //      );
+    //      matches.forEach((match: any) => {
+    //        this.mergedPreke.push({
+    //          ...prekeItem,
+    //          ...match,
+    //        });
+    //      });
+    //    });
 
     this.prekeindeks.forEach((mergedPrekeItem: any) => {
       const match = this.digitaalpreke.filter(
@@ -327,21 +335,21 @@ export class PrekeLysComponent implements OnInit {
       }
     });
 
-    console.log('this.mergedDigitaalPreke: ',this.mergedDigitaalPreke);
+    console.log('this.mergedDigitaalPreke: ', this.mergedDigitaalPreke);
 
-//    this.mergedPreke.forEach((mergedPrekeItem: any) => {
-//      const match = this.digitaalpreke.filter(
-//        (itmInner: any) => itmInner.preekno === mergedPrekeItem.PreekNo,
-//      );
-//      if (match) {
-//        this.mergedDigitaalPreke.push({
-//          ...mergedPrekeItem,
-//          ...match,
-//        });
-//      } else {
-//        this.mergedDigitaalPreke.push(mergedPrekeItem);
-//      }
-//    });
+    //    this.mergedPreke.forEach((mergedPrekeItem: any) => {
+    //      const match = this.digitaalpreke.filter(
+    //        (itmInner: any) => itmInner.preekno === mergedPrekeItem.PreekNo,
+    //      );
+    //      if (match) {
+    //        this.mergedDigitaalPreke.push({
+    //          ...mergedPrekeItem,
+    //          ...match,
+    //        });
+    //      } else {
+    //        this.mergedDigitaalPreke.push(mergedPrekeItem);
+    //      }
+    //    });
 
     this.mergedDigitaalPreke.forEach((mergedPrekeItem: any) => {
       const match = this.boeke.filter(
@@ -357,19 +365,19 @@ export class PrekeLysComponent implements OnInit {
       }
     });
 
-//    this.mergedBoeke.forEach((mergedBoekeItem: any) => {
-//      const match = this.bronne.filter(
-//        (itmInner: any) => itmInner.BronNo === mergedBoekeItem.Bron,
-//      );
-//      if (match) {
-//        this.mergedBronne.push({
-//          ...mergedBoekeItem,
-//          ...match,
-//        });
-//      } else {
-//        this.mergedBronne.push(mergedBoekeItem);
-//      }
-//    });
+    //    this.mergedBoeke.forEach((mergedBoekeItem: any) => {
+    //      const match = this.bronne.filter(
+    //        (itmInner: any) => itmInner.BronNo === mergedBoekeItem.Bron,
+    //      );
+    //      if (match) {
+    //        this.mergedBronne.push({
+    //          ...mergedBoekeItem,
+    //          ...match,
+    //        });
+    //      } else {
+    //        this.mergedBronne.push(mergedBoekeItem);
+    //      }
+    //    });
 
     this.mergedBronne = this.mergedBoeke;
 
@@ -378,27 +386,27 @@ export class PrekeLysComponent implements OnInit {
       chapter: parseInt(item.Hoofstuk, 10), // Convert the Hoofstuk string to a number
       checked: false,
     }));
-    console.log('this.mergedBronne: ',this.mergedBronne);
+    console.log('this.mergedBronne: ', this.mergedBronne);
     this.filterPreke();
   }
 
-//  retrieveTekste(): void {
-//    this.teksteService.getAll().subscribe(
-//      (data) => {
-//        this.tekste = data;
-//        this.mergePreke();
-//      },
-//      (error) => {
-//        console.log(error);
-//      },
-//    );
-//  }
+  //  retrieveTekste(): void {
+  //    this.teksteService.getAll().subscribe(
+  //      (data) => {
+  //        this.tekste = data;
+  //        this.mergePreke();
+  //      },
+  //      (error) => {
+  //        console.log(error);
+  //      },
+  //    );
+  //  }
 
   retrieveBronne(): void {
     this.bronneService.getAll().subscribe(
       (data) => {
         this.bronne = data;
-//        this.retrieveTekste();
+        //        this.retrieveTekste();
         this.mergePreke();
       },
       (error) => {
@@ -455,7 +463,7 @@ export class PrekeLysComponent implements OnInit {
     this.digitaalPrekeService.getAll().subscribe(
       (data) => {
         this.digitaalpreke = data;
-        console.log('this.digitaalpreke: ',this.digitaalpreke);
+        console.log('this.digitaalpreke: ', this.digitaalpreke);
         //this.retrieveFinaalPreke();
         this.retrieveBoeke();
       },
@@ -469,7 +477,7 @@ export class PrekeLysComponent implements OnInit {
     this.prekeIndeksService.getAll().subscribe(
       (data) => {
         this.prekeindeks = data;
-        console.log('prekeindeks: ',this.prekeindeks);
+        console.log('prekeindeks: ', this.prekeindeks);
         this.retrieveDigitaalPreke();
       },
       (error) => {

@@ -42,22 +42,22 @@
       <br />
       <div class="container">
         <div class="form-group">
-	<label for="id" *ngIf="currentLanguage === 'Afrikaans'"
-          >Preeknommer</label
-        >
-        <label for="id" *ngIf="currentLanguage === 'Nederlands'"
-          >Preeknummer</label
-        >
-        <input
-          type="text"
-          id="id"
-          name="id"
-          required
-          [(ngModel)]="filters.id"
-          class="form-control"
-          class="smaller"
-        />
-	</div>
+          <label for="id" *ngIf="currentLanguage === 'Afrikaans'"
+            >Preeknommer</label
+          >
+          <label for="id" *ngIf="currentLanguage === 'Nederlands'"
+            >Preeknummer</label
+          >
+          <input
+            type="text"
+            id="id"
+            name="id"
+            required
+            [(ngModel)]="filters.id"
+            class="form-control"
+            class="smaller"
+          />
+        </div>
         <div class="form-group">
           <label for="digitaalpreke1" *ngIf="currentLanguage === 'Afrikaans'"
             >Soekwoord in digitale preke</label
@@ -244,9 +244,7 @@
               class="form-control"
               required
             />
-            {{
-              currentLanguage === "Afrikaans" ? "Skandeer" : "Scan"
-            }}
+            {{ currentLanguage === "Afrikaans" ? "Skandeer" : "Scan" }}
           </label>
           <label>
             <input
@@ -257,9 +255,7 @@
               class="form-control"
               required
             />
-            {{
-              currentLanguage === "Afrikaans" ? "Digitaal" : "Digitaal"
-            }}
+            {{ currentLanguage === "Afrikaans" ? "Digitaal" : "Digitaal" }}
           </label>
         </div>
       </div>
@@ -288,7 +284,7 @@
               type="radio"
               name="bron"
               [(ngModel)]="filters.bron"
-              value="a"
+              value="Betty"
               class="form-control"
               required
             />
@@ -301,7 +297,7 @@
               type="radio"
               name="bron"
               [(ngModel)]="filters.bron"
-              value="b"
+              value="Johan"
               class="form-control"
               required
             />
@@ -314,7 +310,7 @@
               type="radio"
               name="bron"
               [(ngModel)]="filters.bron"
-              value="c"
+              value="Gre"
               class="form-control"
               required
             />
@@ -327,7 +323,7 @@
               type="radio"
               name="bron"
               [(ngModel)]="filters.bron"
-              value="d"
+              value="Henk"
               class="form-control"
               required
             />
@@ -340,7 +336,7 @@
               type="radio"
               name="bron"
               [(ngModel)]="filters.bron"
-              value="e"
+              value="GeRi"
               class="form-control"
               required
             />
