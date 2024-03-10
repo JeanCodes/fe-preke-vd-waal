@@ -17,21 +17,27 @@ import { FinaalPrekeService } from 'src/app/services/finaal_preke.service';
 import { BybelBoekeService } from 'src/app/services/bybel-boeke.service';
 import { BronneService } from 'src/app/services/bronne.service';
 import { TeksteService } from 'src/app/services/tekste.service';
+import { DigitaalPrekeService } from 'src/app/services/digitaalpreke.service';
+import { PrekeIndeksService } from 'src/app/services/preke_indeks.service';
 
 @Component({
   selector: 'app-preke-lys',
   templateUrl: './preke-lys.component.html',
   styleUrls: ['./preke-lys.component.css'],
 })
+
 export class PrekeLysComponent implements OnInit {
   boeke: any;
   preke: any;
+  prekeindeks: any;
+  digitaalpreke: any;
   finaal_preke: any;
   bronne: any;
   tekste: any;
   mergedPreke: any = [];
   mergedBoeke: any = [];
   mergedBronne: any = [];
+  mergedDigitaalPreke: any = [];
   preFilter: any = [];
   myFinalFilters: any = [];
   relevantChapters: any = [];
@@ -62,10 +68,11 @@ export class PrekeLysComponent implements OnInit {
   private langSubscription!: Subscription;
   filters = {
     tema: '',
-    digitaalpreke: '', // Make sure this line is included
+    digitaalpreke: '',
     id: '',
     taal: 'Als',
     bron: 'Als',
+    vorm: 'Als',
     begin: '',
     eind: '',
     eenjaar: '',
@@ -81,6 +88,8 @@ export class PrekeLysComponent implements OnInit {
     private bybelBoekeService: BybelBoekeService,
     private bronneService: BronneService,
     private teksteService: TeksteService,
+    private digitaalPrekeService: DigitaalPrekeService,
+    private prekeIndeksService: PrekeIndeksService,
     private formBuilder: FormBuilder,
     private ReactiveFormsModule: ReactiveFormsModule,
     public dialog: MatDialog,
@@ -93,7 +102,8 @@ export class PrekeLysComponent implements OnInit {
         this.currentLanguage = lang;
       },
     );
-    this.retrievePreke();
+//    this.retrievePreke();
+    this.retrievePrekeIndeks();
   }
   isOldTestamentVisible = false;
   isNewTestamentVisible = false;
@@ -126,14 +136,15 @@ export class PrekeLysComponent implements OnInit {
 
   filterPreke() {
     this.myFinalFilters = [];
-
+    console.log('this.mergedBronne: ',this.mergedBronne);
     // Apply 1 Jaar Filter
     if (this.filters.eenjaar && this.filters.eenjaar.length > 0) {
       const filteredData = this.mergedBronne.filter(
-        (item: any) => Number(item.Jaar) === Number(this.filters.eenjaar),
+        (item: any) => Number(item.jaar) === Number(this.filters.eenjaar),
       );
       this.myFinalFilters.push(...filteredData);
     }
+    console.log('this.myFinalFilters: ',this.myFinalFilters)
     // Apply Begin & Eind Jaar Filter
     if (
       this.filters.begin &&
@@ -145,107 +156,129 @@ export class PrekeLysComponent implements OnInit {
       const eind = Number(this.filters.eind);
 
       const filteredData = this.mergedBronne.filter((item: any) => {
-        const jaar = Number(item.Jaar);
+        const jaar = Number(item.jaar);
         return jaar >= begin && jaar <= eind;
       });
       this.myFinalFilters.push(...filteredData);
     } else if (this.filters.begin && this.filters.begin.length > 0) {
       const begin = Number(this.filters.begin);
       const filteredDataBegin = this.mergedBronne.filter(
-        (item: any) => Number(item.Jaar) >= begin,
+        (item: any) => Number(item.jaar) >= begin,
       );
       this.myFinalFilters.push(...filteredDataBegin);
     } else if (this.filters.eind && this.filters.eind.length > 0) {
       const eind = Number(this.filters.eind);
       const filteredDataEind = this.mergedBronne.filter(
-        (item: any) => Number(item.Jaar) <= eind,
+        (item: any) => Number(item.jaar) <= eind,
       );
       this.myFinalFilters.push(...filteredDataEind);
     }
+    console.log('this.myFinalFilters1: ',this.myFinalFilters);
+
     // Adding Preek whose number was filled in
     if (this.filters.id && this.filters.id.length > 0) {
       const filteredData = this.mergedBronne.filter(
-        (item: any) => Number(item.PreekNo) === Number(this.filters.id),
+        (item: any) => Number(item.nr) === Number(this.filters.id),
       );
       this.myFinalFilters.push(...filteredData);
     }
-    console.log('this.myFinalFilters: ', this.myFinalFilters);
+    console.log('this.myFinalFilters2: ', this.myFinalFilters);
     console.log('this.filters: ', this.filters);
 
     //Filtering mergedBronne to only include teksopsies selected
     if (this.filters.teksopsie != 'Als' && this.filters.teksopsie != 'Almal') {
       const filteredDataTeksOpsie = this.myFinalFilters.filter(
-        (item: any) => item.P_L_B === this.filters.teksopsie,
+        (item: any) => item.pl === this.filters.teksopsie,
       );
       this.myFinalFilters = filteredDataTeksOpsie;
     }
+    console.log('this.myFinalFilters3: ', this.myFinalFilters);
     //Filtering mergedBronne to only include taal selected
     if (this.filters.taal != 'Als' && this.filters.taal != 'Almal') {
       const filteredDataTaal = this.myFinalFilters.filter(
-        (item: any) => item.Taal === this.filters.taal,
+        (item: any) => item.taal === this.filters.taal,
       );
       this.myFinalFilters = filteredDataTaal;
     }
+    console.log('this.myFinalFilters4: ', this.myFinalFilters);
     //Filtering mergedBronne to only include bron selected
     if (this.filters.bron != 'Als' && this.filters.bron != 'Almal') {
       const filteredDataBron = this.myFinalFilters.filter(
-        (item: any) => item.Bron === this.filters.bron,
+        (item: any) => item.bron === this.filters.bron,
       );
       this.myFinalFilters = filteredDataBron;
     }
+    //Filtering mergedBronne to only include bron selected
+    if (this.filters.vorm != 'Als' && this.filters.vorm != 'Almal') {
+      const filteredDataVorm = this.myFinalFilters.filter(
+        (item: any) => item.vorm === this.filters.vorm,
+      );
+      this.myFinalFilters = filteredDataVorm;
+    }
+    console.log('this.myFinalFilters5: ', this.myFinalFilters);
     if (this.myCheckedChapters && this.myCheckedChapters.length > 0) {
       this.myFinalFilters = this.myFinalFilters.filter((finalFilterItem: any) =>
         this.myCheckedChapters.some(
           (checkedChapter) =>
-            Number(finalFilterItem.Hoofstuk) ===
+            Number(finalFilterItem.h_stuk) ===
               Number(checkedChapter.chapter) &&
-            Number(finalFilterItem.BoekNo) === Number(checkedChapter.boekno),
+            Number(finalFilterItem.boek) === Number(checkedChapter.boekno),
         ),
       );
     }
+    console.log('this.myFinalFilters6: ', this.myFinalFilters);
     
     this.myFinalFilters = this.myFinalFilters.filter((item:any) => {
-      return this.filters.tema === "" || item.Tema.toLowerCase().includes(this.filters.tema.toLowerCase());
+      return this.filters.tema === "" || item.tema.toLowerCase().includes(this.filters.tema.toLowerCase());
     });
+    console.log('this.myFinalFilters7: ', this.myFinalFilters);
+    console.log('this.filters: ',this.filters);
 
-    interface MyFinalFilterItem {
-      id: number;
-      P_L_B: string;
-      [key: string]: any; // Use specific types instead of any for a stricter type definition.
-    }
+//    interface MyFinalFilterItem {
+//      id: number;
+//      P_L_B: string;
+//      [key: string]: any; // Use specific types instead of any for a stricter type definition.
+//    }
 
-    this.myFinalFilters = this.myFinalFilters.map((item: MyFinalFilterItem) => {
-      // Amend KortBeskrywing if '0' property exists.
-      if (item['0']) {
-        return {
-          ...item,
-          KortBeskrywing: item['0'].KortBeskrywing,
-        };
-      } else {
-        return item;
-      }
-    });
+//    this.myFinalFilters = this.myFinalFilters.map((item: MyFinalFilterItem) => {
+//      // Amend KortBeskrywing if '0' property exists.
+//      if (item['0']) {
+//        return {
+//          ...item,
+//          KortBeskrywing: item['0'].KortBeskrywing,
+//        };
+//      } else {
+//        return item;
+//      }
+//    });
+    console.log('this.myFinalFilters8: ', this.myFinalFilters);
 
     // Filter to show only items with P_L_B === 'P'.
-    this.myFinalFilters = this.myFinalFilters.filter(
-      (itmInner: MyFinalFilterItem) => itmInner.P_L_B === 'P',
-    );
+//    this.myFinalFilters = this.myFinalFilters.filter(
+//      (itmInner: MyFinalFilterItem) => itmInner['pl'] === 'P',
+//    );
 
+
+    console.log('this.myFinalFilters9: ', this.myFinalFilters);
     // Remove duplicates based on the 'id' property.
     const unique = new Map<number, MyFinalFilterItem>();
     this.myFinalFilters.forEach((item: MyFinalFilterItem) => {
       unique.set(item.id, item);
     });
     this.myFinalFilters = Array.from(unique.values());
-
+    
+    console.log('this.myFinalFilters10: ', this.myFinalFilters);
     //Sorting myFinalFilters by PreekNo
-    this.myFinalFilters.sort((a: any, b: any) => a.PreekNo - b.PreekNo);
+    this.myFinalFilters.sort((a: any, b: any) => a.nr - b.nr);
+    console.log('this.myFinalFilters11: ', this.myFinalFilters);
     this.prekeCount = this.myFinalFilters.length;
     this.filters = {
       tema: '',
+      digitaalpreke: '',
       id: '',
       taal: 'Als',
       bron: 'Als',
+      vorm: 'Als',
       begin: '',
       eind: '',
       eenjaar: '',
@@ -263,28 +296,57 @@ export class PrekeLysComponent implements OnInit {
   mergePreke() {
     this.loading = true;
     this.mergedBronne = [];
+    this.mergedDigitaalPreke = [];
     this.mergedPreke = [];
     this.mergedBoeke = [];
     this.preke = this.finaal_preke;
 
-    this.preke.forEach((prekeItem: any) => {
-      const matches = this.tekste.filter(
-        (itmInner: any) => itmInner.PreekNo === prekeItem.PreekNo,
-      );
+//    this.preke.forEach((prekeItem: any) => {
+//      const matches = this.tekste.filter(
+//        (itmInner: any) => itmInner.PreekNo === prekeItem.PreekNo,
+//      );
+//      matches.forEach((match: any) => {
+//        this.mergedPreke.push({
+//          ...prekeItem,
+//          ...match,
+//        });
+//      });
+//    });
 
-      matches.forEach((match: any) => {
-        this.mergedPreke.push({
-          ...prekeItem,
+    this.prekeindeks.forEach((mergedPrekeItem: any) => {
+      const match = this.digitaalpreke.filter(
+        (itmInner: any) => itmInner.preekno === mergedPrekeItem.nr,
+      );
+      if (match) {
+        this.mergedDigitaalPreke.push({
+          ...mergedPrekeItem,
           ...match,
         });
-      });
+      } else {
+        this.mergedDigitaalPreke.push(mergedPrekeItem);
+      }
     });
 
-    this.mergedPreke.forEach((mergedPrekeItem: any) => {
+    console.log('this.mergedDigitaalPreke: ',this.mergedDigitaalPreke);
+
+//    this.mergedPreke.forEach((mergedPrekeItem: any) => {
+//      const match = this.digitaalpreke.filter(
+//        (itmInner: any) => itmInner.preekno === mergedPrekeItem.PreekNo,
+//      );
+//      if (match) {
+//        this.mergedDigitaalPreke.push({
+//          ...mergedPrekeItem,
+//          ...match,
+//        });
+//      } else {
+//        this.mergedDigitaalPreke.push(mergedPrekeItem);
+//      }
+//    });
+
+    this.mergedDigitaalPreke.forEach((mergedPrekeItem: any) => {
       const match = this.boeke.filter(
         (itmInner: any) => itmInner.BoekNo === mergedPrekeItem.BoekNo,
       );
-
       if (match) {
         this.mergedBoeke.push({
           ...mergedPrekeItem,
@@ -295,45 +357,49 @@ export class PrekeLysComponent implements OnInit {
       }
     });
 
-    this.mergedBoeke.forEach((mergedBoekeItem: any) => {
-      const match = this.bronne.filter(
-        (itmInner: any) => itmInner.BronNo === mergedBoekeItem.Bron,
-      );
-      if (match) {
-        this.mergedBronne.push({
-          ...mergedBoekeItem,
-          ...match,
-        });
-      } else {
-        this.mergedBronne.push(mergedBoekeItem);
-      }
-    });
+//    this.mergedBoeke.forEach((mergedBoekeItem: any) => {
+//      const match = this.bronne.filter(
+//        (itmInner: any) => itmInner.BronNo === mergedBoekeItem.Bron,
+//      );
+//      if (match) {
+//        this.mergedBronne.push({
+//          ...mergedBoekeItem,
+//          ...match,
+//        });
+//      } else {
+//        this.mergedBronne.push(mergedBoekeItem);
+//      }
+//    });
+
+    this.mergedBronne = this.mergedBoeke;
 
     this.checkedChaptersState = this.mergedBronne.map((item: any) => ({
       boek: item.Boek,
       chapter: parseInt(item.Hoofstuk, 10), // Convert the Hoofstuk string to a number
       checked: false,
     }));
+    console.log('this.mergedBronne: ',this.mergedBronne);
     this.filterPreke();
   }
 
-  retrieveTekste(): void {
-    this.teksteService.getAll().subscribe(
-      (data) => {
-        this.tekste = data;
-        this.mergePreke();
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
-  }
+//  retrieveTekste(): void {
+//    this.teksteService.getAll().subscribe(
+//      (data) => {
+//        this.tekste = data;
+//        this.mergePreke();
+//      },
+//      (error) => {
+//        console.log(error);
+//      },
+//    );
+//  }
 
   retrieveBronne(): void {
     this.bronneService.getAll().subscribe(
       (data) => {
         this.bronne = data;
-        this.retrieveTekste();
+//        this.retrieveTekste();
+        this.mergePreke();
       },
       (error) => {
         console.log(error);
@@ -385,11 +451,38 @@ export class PrekeLysComponent implements OnInit {
     );
   }
 
+  retrieveDigitaalPreke(): void {
+    this.digitaalPrekeService.getAll().subscribe(
+      (data) => {
+        this.digitaalpreke = data;
+        console.log('this.digitaalpreke: ',this.digitaalpreke);
+        //this.retrieveFinaalPreke();
+        this.retrieveBoeke();
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  }
+
+  retrievePrekeIndeks(): void {
+    this.prekeIndeksService.getAll().subscribe(
+      (data) => {
+        this.prekeindeks = data;
+        console.log('prekeindeks: ',this.prekeindeks);
+        this.retrieveDigitaalPreke();
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  }
+
   retrievePreke(): void {
     this.prekeService.getAll().subscribe(
       (data) => {
         this.preke = data;
-        this.retrieveFinaalPreke();
+        this.retrievePrekeIndeks();
       },
       (error) => {
         console.log(error);
