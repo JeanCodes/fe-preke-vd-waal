@@ -1,43 +1,69 @@
 <div class="filter-div">
   <div class="submit-form">
     <div>
+      <br />
       <h3 *ngIf="currentLanguage === 'Afrikaans'">
         Kies een of meer preke uit 638 en kliek dan op Soek aan die einde.
       </h3>
       <h3 *ngIf="currentLanguage === 'Nederlands'">
         Kies een of meer preke uit 638 en klik dan op Zoek aan het einde.
       </h3>
-
       <div class="year-container">
-        <label for="beginjaar">Net 1 jaar</label>
-        <input
-          type="text"
-          id="begin"
-          name="begin"
-          class="preekjaar beginjaar form-control"
-          required
-          [(ngModel)]="filters.eenjaar"
-        />
-
-        <label for="beginjaar">&nbsp;&nbsp;&nbsp;&nbsp; Of Beginjaar</label>
-        <input
-          type="text"
-          id="begin"
-          name="begin"
-          class="preekjaar beginjaar form-control"
-          required
-          [(ngModel)]="filters.begin"
-        />
-
-        <label for="eindjaar">Tot Eindjaar</label>
-        <input
-          type="text"
-          id="eind"
-          name="eind"
-          class="preekjaar eindjaar form-control"
-          required
-          [(ngModel)]="filters.eind"
-        />
+        <div class="form-group">
+          <label for="id" *ngIf="currentLanguage === 'Afrikaans'"
+            >Net 1 jaar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+          >
+          <label for="id" *ngIf="currentLanguage === 'Nederlands'"
+            >Precies 1 jaar&nbsp;</label
+          >
+          <input
+            type="text"
+            id="eenjaar"
+            name="eenjaar"
+            required
+            [(ngModel)]="filters.eenjaar"
+            class="form-control"
+            class="smaller"
+          />
+        </div>
+        <div class="form-group">
+          <label for="id" *ngIf="currentLanguage === 'Afrikaans'"
+            >Of
+            Beginjaar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+          >
+          <label for="id" *ngIf="currentLanguage === 'Nederlands'"
+            >Of
+            Startjaar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+          >
+          <input
+            type="text"
+            id="begin"
+            name="begin"
+            required
+            [(ngModel)]="filters.begin"
+            class="form-control"
+            class="smaller"
+          />
+        </div>
+        <div class="form-group">
+          <label for="id" *ngIf="currentLanguage === 'Afrikaans'"
+            >Tot
+            Eindjaar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+          >
+          <label for="id" *ngIf="currentLanguage === 'Nederlands'"
+            >Tot
+            Eindjaar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+          >
+          <input
+            type="text"
+            id="eind"
+            name="eind"
+            required
+            [(ngModel)]="filters.eind"
+            class="form-control"
+            class="smaller"
+          />
+        </div>
       </div>
       <br />
       <div class="container">
@@ -412,15 +438,13 @@
               : "Belijdenisgeschriften"
           }}
         </button>
-
-        <a
-          href="https://prekevdwaal.s3.eu-west-1.amazonaws.com/preke/romantiek.pdf"
-          target="_blank"
-          download="romantiek.pdf"
-          class="download-button"
-        >
-          Kies Romantiek
-        </a>
+        <button class="min-btn" mat-button (click)="downloadRomantiek()">
+          {{
+            currentLanguage === "Afrikaans"
+              ? "Kies Romantiek"
+              : "Kies Romantiek"
+          }}
+        </button>
       </div>
 
       <div class="label-button-container" *ngIf="isOldTestamentVisible">
@@ -495,35 +519,37 @@
         </label>
       </div>
       <hr />
-      <p *ngIf="currentLanguage === 'Afrikaans'">
+      <br />
+      <h3 [hidden]="loading" *ngIf="currentLanguage === 'Afrikaans'">
         Kliek op soek na keuses gemaak is
-      </p>
-      <p *ngIf="currentLanguage === 'Nederlands'">
+      </h3>
+      <h3 [hidden]="loading" *ngIf="currentLanguage === 'Nederlands'">
         Klik op zoeken na keuzes gemaakt zijn
-      </p>
-
+      </h3>
+      <div [hidden]="loading">
       <button
-        (click)="resetPage(); mergePreke()"
+        (click)="filterPreke()"
         class="button btn btn-success"
         *ngIf="currentLanguage === 'Afrikaans'"
       >
         Soek
       </button>
       <button
-        (click)="resetPage(); mergePreke()"
+        (click)="filterPreke()"
         class="button btn btn-success"
         *ngIf="currentLanguage === 'Nederlands'"
       >
         Zoeken
       </button>
+      </div>
     </div>
   </div>
 </div>
 
-<h2 *ngIf="currentLanguage === 'Afrikaans'">
+<h2 [hidden]="loading" *ngIf="currentLanguage === 'Afrikaans'">
   Lys van preke gekies. Aantal: {{ prekeCount }}
 </h2>
-<h2 *ngIf="currentLanguage === 'Nederlands'">
+<h2 [hidden]="loading" *ngIf="currentLanguage === 'Nederlands'">
   Lijst van gekozen preken. Aantal: {{ prekeCount }}
 </h2>
 
@@ -565,9 +591,7 @@
     <td>{{ row.teks }}</td>
     <td>
       <a
-        href="https://prekevdwaal.s3.eu-west-1.amazonaws.com/preke/{{
-          row.nr
-        }}.pdf"
+        href="https://prekevdwaal.s3.eu-west-1.amazonaws.com/preke/{{ row.nr }}{{ row.vorm === 'digitaal' ? '.docx' : '.pdf' }}"
         target="_blank"
       >
         <div style="height: 100%; width: 100%">Laai af</div>
@@ -588,10 +612,25 @@
   <br />
   <label>Aantal preke gekies: {{ prekeCount }}</label>
 </div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
-<div [hidden]="!loading" id="load2">
-  <div>L</div>
-  <div>A</div>
-  <div>A</div>
-  <div>I</div>
+<div [hidden]="!loading" id="laai-container">
+  <div class="divider" aria-hidden="true"></div>
+  <p class="loading-text" aria-label="Loading">
+    <span class="letter" aria-hidden="true">L</span>
+    <span class="letter" aria-hidden="true">A</span>
+    <span class="letter" aria-hidden="true">A</span>
+    <span class="letter" aria-hidden="true">I</span>
+    <span class="letter" aria-hidden="true"></span>
+    <span class="letter" aria-hidden="true">P</span>
+    <span class="letter" aria-hidden="true">R</span>
+    <span class="letter" aria-hidden="true">E</span>
+    <span class="letter" aria-hidden="true">K</span>
+    <span class="letter" aria-hidden="true">E</span>
+  </p>
 </div>

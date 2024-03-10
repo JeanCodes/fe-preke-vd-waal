@@ -10,12 +10,15 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class HoofstukkeDialogComponent implements OnInit {
   public checkedStates: { boek: string; chapter: number; checked: boolean }[] =
     [];
+  public loading: boolean;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<HoofstukkeDialogComponent>,
   ) {
     console.log('this.data: ', this.data);
+    console.log('this.checkedStates: ',this.checkedStates);
+    this.checkedStates = [];
     this.data.checkedChaptersState = this.data.checkedChaptersState.filter(
       (item: any) => item.boek === this.data.boek,
     );
@@ -32,10 +35,12 @@ export class HoofstukkeDialogComponent implements OnInit {
         checked: false,
       }));
     }
+    this.loading = false;
   }
 
   ngOnInit() {
     this.dialogRef.beforeClosed().subscribe(() => this.logSelectedItems());
+//    this.checkedStates = [];
   }
 
   checkAllHoofstukke(): void {
